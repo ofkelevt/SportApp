@@ -4,7 +4,6 @@ using System.Windows.Input;
 using SportApp.Models;
 using SportApp.Services;
 using FuzzySharp;
-using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.VisualBasic;
 namespace SportApp.ViewModels
@@ -25,6 +24,7 @@ namespace SportApp.ViewModels
         public string Input1 { get; set; } = "Event Name filter";
         public string Input2 { get; set; } = "sport filter";
         public string Input3 { get; set; } = "Crator Name filter";
+        public string trao { get; set; } = "shit";
 
         private bool _isRefreshing;
         public bool IsRefreshing
@@ -46,23 +46,52 @@ namespace SportApp.ViewModels
             proxy = new EventActionsWebAPIProxy();
             proxyUser = new UserWebAPIProxy();
             proxyConnection = new EventToUserWebApiProxy();
-            var e = proxy.GetEventsAsync().Result;
-            Events = new ObservableCollection<Event>(e);
             // Command for refreshing the list
-            RefreshCommand = new Command(ExecuteRefresh);
+            RefreshCommand = new Command(async ()=> await ExecuteRefresh());
             // Command for filtering the list
-            FilterCommandEN = new Command(ApplyFilterEN);
+            //FilterCommandEN = new Command(ApplyFilterEN);
+            FilterCommandEN = new Command(async () => await ExecuteRefresh());
             FilterCommandS = new Command(ApplyFilterS);
             FilterCommandC = new Command(ApplyFilterC);
             JoinCommand = new Command<int>(OnJoinEvent);
-
+            Events = new ObservableCollection<Event>();
+            IsRefreshing = false;
         }
-        private async void ExecuteRefresh()
+
+        private void LoadEventsAsync()
+        {
+            try
+            {
+                int i = 1;
+                IsRefreshing = true;
+                IsRefreshing = false;
+                //var eventsList = await proxy.GetEventsAsync();  // Await the task properly
+                //Events = new ObservableCollection<Event>(eventsList);
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions (e.g., network issues)
+                Console.WriteLine($"Error loading events: {ex.Message}");
+            }
+        }
+        private async Task ExecuteRefresh()
         {
             // Refresh the list (for example, reload data from a server)
             IsRefreshing = true;
             var e = await proxy.GetEventsAsync();
-            Events = new ObservableCollection<Event>(e);
+            try
+            {
+                Events.Clear();
+                foreach (Event s in e)
+                    Events.Add(s);
+                trao = "2";
+                OnPropertyChanged(nameof(trao));
+                OnPropertyChanged(nameof(Events));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("exeption" + ex.Message);
+            }
             IsRefreshing = false;
         }
 
@@ -87,11 +116,11 @@ namespace SportApp.ViewModels
 
             Events = new ObservableCollection<Event>(filteredList);
         }
-        private async void ApplyFilterC()
+        private void ApplyFilterC()
         {
             if(Users == null || Users.Count == 0)
             {
-                Users = new ObservableCollection<Users>(await proxyUser.GetEventsAsync());
+                Users = new ObservableCollection<Users>(proxyUser.GetEventsAsync().Result);
                 ExecuteRefresh();
             }
             var input = Input3;
@@ -118,11 +147,6 @@ namespace SportApp.ViewModels
                 // Add logic to register the user to the event
                 Console.WriteLine($"Joined event: {selectedEvent.EventName}");
             }
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -15,7 +15,7 @@ namespace SportApp.Services
         private HttpClient client;
         private JsonSerializerOptions jsonSerializerOptions;
         private string baseUrl;
-        public static string BaseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5171/api/" : "http://localhost:5171/api/";
+        public static string BaseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5274/api/" : "http://localhost:5274/api/";
 
         public List<Event> events { get; set;}
 
@@ -49,7 +49,20 @@ namespace SportApp.Services
                 return null;
             }
         }
-
+        public async Task<string> status()
+        {
+            string url = $"{this.baseUrl}Events/status";
+            try
+            {
+                var events = await client.GetFromJsonAsync<string>(url);
+                return events;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return null;
+            }
+        }
         public async Task<Event> GetEventAsync(int eventId)
         {
             string url = $"{this.baseUrl}Events/{eventId}";

@@ -6,7 +6,7 @@ public partial class FindEvent : ContentPage
 {
 	public FindEvent(FindEventsViewModel findEventsViewModel)
 	{
-        BindingContext = findEventsViewModel;
         InitializeComponent();
+        BindingContext = findEventsViewModel;
     }
 }
