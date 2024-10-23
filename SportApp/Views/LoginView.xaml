@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SportApp.Views.LoginView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodel="clr-namespace:SportApp.ViewModels"
+    Title="LoginView"
+    x:DataType="viewmodel:LoginViewModel">
+    <ScrollView>
+        <Grid Margin="0,10,0,0" RowDefinitions="2*,*">
+            <VerticalStackLayout
+                Padding="10"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
+                <Frame
+                    Margin="0,-20,0,0"
+                    Padding="8"
+                    BorderColor="Gray"
+                    CornerRadius="10"
+                    HasShadow="True"
+                    ZIndex="0">
+                    <Frame.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.9"
+                            Radius="10"
+                            Offset="20,20" />
+                    </Frame.Shadow>
+                    <StackLayout Padding="10">
+                        <VerticalStackLayout Padding="10" BackgroundColor="{StaticResource White}">
+                            <Image
+                                HeightRequest="80"
+                                HorizontalOptions="Center"
+                                IsVisible="False"
+                                SemanticProperties.Description="Cute dot net bot waving hi to you!"
+                                Source="brushfill.png" />
+                            <Label
+                                Padding="5"
+                                FontAttributes="Bold"
+                                FontFamily="Consolas"
+                                FontSize="30"
+                                Text="Login"
+                                TextColor="Black" />
+                            <Label
+                                Padding="5"
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                Text="to continue!"
+                                TextColor="Black" />
+                        </VerticalStackLayout>
+
+                        <!--<BoxView Color="Gray"
+             HeightRequest="2"
+             HorizontalOptions="Fill" />-->
+                        <VerticalStackLayout Padding="10">
+                            <Label FontFamily="Consolas" Text="Username" />
+                            <Frame
+                                Margin="0,10,0,0"
+                                Padding="3"
+                                CornerRadius="10">
+                                <VerticalStackLayout>
+
+                                    <Entry
+                                        x:Name="Username"
+                                        Margin="5,0,0,0"
+                                        FontSize="18"
+                                        Placeholder="Username"
+                                        Text="{Binding UserName, Mode=TwoWay}" />
+
+                                </VerticalStackLayout>
+                            </Frame>
+                            <VerticalStackLayout Margin="0,5,0,0" Padding="0">
+                                <Label FontFamily="Consolas" Text="Password" />
+                                <Frame
+                                    Margin="0,10,0,0"
+                                    Padding="3"
+                                    CornerRadius="10">
+                                    <Entry
+                                        x:Name="Password"
+                                        Margin="5,0,0,0"
+                                        FontSize="18"
+                                        IsPassword="True"
+                                        Placeholder="Password"
+                                        Text="{Binding Password, Mode=TwoWay}">
+                                        <Entry.Behaviors />
+                                    </Entry>
+                                </Frame>
+                            </VerticalStackLayout>
+
+
+                            <Button
+                                x:Name="LoginButton"
+                                Margin="0,20,0,0"
+                                Command="{Binding LoginCommand}"
+                                HorizontalOptions="FillAndExpand"
+                                Text="Login"
+                                VerticalOptions="CenterAndExpand" />
+
+                            <BoxView
+                                Margin="0,20,0,0"
+                                HeightRequest="2"
+                                HorizontalOptions="Fill"
+                                Color="Black" />
+                            <VerticalStackLayout Margin="0,10,0,0" Padding="10">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontFamily="Consolas"
+                                    HorizontalOptions="Center">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span
+                                                FontAttributes="Bold"
+                                                FontFamily="Consolas"
+                                                Text="Don't have an account?" />
+                                            <Span
+                                                FontAttributes="Bold"
+                                                FontFamily="Consolas"
+                                                Text="Sign Up"
+                                                TextColor="{StaticResource Primary}"
+                                                
+                                                
+                                                TextDecorations="Underline" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                            </VerticalStackLayout>
+
+                        </VerticalStackLayout>
+                    </StackLayout>
+                </Frame>
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

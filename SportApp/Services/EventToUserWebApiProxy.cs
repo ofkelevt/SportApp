@@ -16,7 +16,7 @@ namespace SportApp.Services
         private HttpClient client;
         private JsonSerializerOptions jsonSerializerOptions;
         private string baseUrl;
-        public static string BaseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5171/api/" : "http://localhost:5171/api/";
+        public static string BaseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5274/api/" : "http://localhost:5274/api/";
         public List<UserToEvent> events { get; set; }
 
         public EventToUserWebApiProxy()
@@ -64,7 +64,28 @@ namespace SportApp.Services
                 return null;
             }
         }
-        public async void DeleteEventAsync(int eventId)
+        public async Task<bool> putUserToEventAsync(UserToEvent updatedUserToEvent)
+        {
+            try
+            {
+                // Serialize the updated object to JSON
+                var content = JsonContent.Create(updatedUserToEvent);
+
+                // Send the PUT request to the appropriate endpoint (e.g., /events/{id})
+                var response = await client.PutAsync($"{baseUrl}UserToEvent/{updatedUserToEvent.TableId}", content);
+
+                // Check if the request was successful (HTTP 2xx)
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                // Log the error and return false to indicate failure
+                Console.WriteLine($"Error updating UserToEvent: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task DeleteEventAsync(int eventId)
         {
             string url = $"{this.baseUrl}UserToEvent/{eventId}";
             try
@@ -83,7 +104,6 @@ namespace SportApp.Services
             try
             {
                 string json = JsonSerializer.Serialize(events, jsonSerializerOptions);
-                //string json = JsonSerializer.Serialize(new{ Email=email,Password=password},jsonSerializerOptions);
                 StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PostAsync(url, content);
                 if (response.IsSuccessStatusCode)

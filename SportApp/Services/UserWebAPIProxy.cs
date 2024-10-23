@@ -14,7 +14,7 @@ namespace SportApp.Services
         private HttpClient client;
         private JsonSerializerOptions jsonSerializerOptions;
         private string baseUrl;
-        public static string BaseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5171/api/" : "http://localhost:5171/api/";
+        public static string BaseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5274/api/" : "http://localhost:5274/api/";
         public List<Users> events { get; set; }
 
         public UserWebAPIProxy()
@@ -32,10 +32,10 @@ namespace SportApp.Services
             };
         }
 
-        public async Task<List<Users>> GetEventsAsync()
+        public async Task<List<Users>> GetUsersAsync()
         {
             //Set URI to the specific function API
-            string url = $"{this.baseUrl}User";
+            string url = $"{this.baseUrl}Users";
             try
             {
                 var events = await client.GetFromJsonAsync<List<Users>>(url);
@@ -48,9 +48,9 @@ namespace SportApp.Services
             }
         }
 
-        public async Task<Users> GetEventAsync(int eventId)
+        public async Task<Users> GetUserAsync(int eventId)
         {
-            string url = $"{this.baseUrl}User/{eventId}";
+            string url = $"{this.baseUrl}Users/{eventId}";
             try
             {
                 var events = await client.GetFromJsonAsync<Users>(url);
@@ -62,9 +62,9 @@ namespace SportApp.Services
                 return null;
             }
         }
-        public async void DeleteEventAsync(int eventId)
+        public async void DeleteUserAsync(int eventId)
         {
-            string url = $"{this.baseUrl}User/{eventId}";
+            string url = $"{this.baseUrl}Users/{eventId}";
             try
             {
                 await client.DeleteAsync(url);
@@ -75,9 +75,9 @@ namespace SportApp.Services
             }
 
         }
-        public async Task<bool> PostEventAsync(Users events)
+        public async Task<bool> PostUserAsync(Users events)
         {
-            string url = $"{this.baseUrl}User";
+            string url = $"{this.baseUrl}Users";
             try
             {
                 string json = JsonSerializer.Serialize(events, jsonSerializerOptions);

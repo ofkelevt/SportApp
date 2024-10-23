@@ -2,31 +2,21 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace SportApp.Models
 {
-    [Table("chat_comment")]
     public class ChatComment
     {
-        [Key]
-        [Column("comment_id")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public int CommentId { get; set; }
-
-        [ForeignKey("User")]
-        [Column("commenter_id")]
         public int CommenterId { get; set; }
-
-        [ForeignKey("Event")]
-        [Column("event_id")]
         public int EventId { get; set; }
-
-        [Column("comment")]
         public string? CommentText { get; set; }
-
-        [Column("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-        // Navigation Properties
+        [JsonIgnore]
         public Users Commenter { get; set; }
+        [JsonIgnore]
         public Event Event { get; set; }
     }
 

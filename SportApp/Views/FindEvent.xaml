@@ -46,46 +46,58 @@
                     <DataTemplate x:DataType="Models:Event">
                         <ViewCell>
                             <Frame Margin="5" BorderColor="Gray" CornerRadius="10" HasShadow="True">
-                                <StackLayout Padding="10" Spacing="8">
+                                <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto,Auto" Padding="10">
+                                    <!-- Left Side: Event Details -->
+                                    <StackLayout Spacing="8" Grid.Column="0">
+                                        <!-- Creator Picture and Username -->
+                                        <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Center">
+                                            <Image Source="{Binding Crator.PictureUrl}" 
+                                                   HeightRequest="40" WidthRequest="40" 
+                                                   Aspect="AspectFill" VerticalOptions="Center" />
+                                            <Label Text="{Binding Crator.Username}" 
+                                                   FontSize="Medium" 
+                                                   FontAttributes="Bold" 
+                                                   VerticalOptions="Center" />
+                                        </StackLayout>
 
-                                    <!-- Profile Picture and Username -->
-                                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Center">
-                                        <Label Text="{Binding CratorId}" 
+                                        <!-- Event Details -->
+                                        <Label Text="{Binding EventName}" 
                                                FontSize="Medium" 
-                                               VerticalOptions="Center" 
-                                               FontAttributes="Bold" />
+                                               FontAttributes="Bold" 
+                                               TextColor="Black" />
+
+                                        <Label Text="{Binding Sport}" 
+                                               FontSize="Small" 
+                                               TextColor="Gray" />
+
+                                        <Label Text="{Binding StreetName, StringFormat='{0}, {1}', 
+                                                      ConverterParameter={Binding CityName}}" 
+                                               FontSize="Small" />
+
+                                        <Label Text="{Binding EndsAt, StringFormat='Event Occurs At: {0:dd/MM/yyyy}'}" 
+                                               FontSize="Small" 
+                                               TextColor="DarkGray" />
+
+                                        <Label Text="{Binding CreatedAt, StringFormat='Created At: {0:dd/MM/yyyy}'}" 
+                                               FontSize="Small" 
+                                               TextColor="Gray" />
                                     </StackLayout>
 
-                                    <!-- Event Details -->
-                                    <Label Text="{Binding EventName}" 
-                                           FontSize="Medium" 
-                                           FontAttributes="Bold" 
-                                           TextColor="Black" />
-
-                                    <Label Text="{Binding Sport}" 
-                                           FontSize="Small" 
-                                           TextColor="Gray" />
-
-                                    <Label Text="{Binding StreetName, StringFormat='{0}, {1}', 
-                                                  ConverterParameter={Binding CityName}}" 
-                                           FontSize="Small" />
-
-                                    <Label Text="{Binding EndsAt, StringFormat='Event Occurs At: {0:dd/MM/yyyy}'}" 
-                                           FontSize="Small" 
-                                           TextColor="DarkGray" />
-
-                                    <Label Text="{Binding CreatedAt, StringFormat='Created At: {0:dd/MM/yyyy}'}" 
-                                           FontSize="Small" 
-                                           TextColor="Gray" />
-
+                                    <!-- Right Side: Event Picture -->
+                                    <Image Grid.Column="1" 
+                                           Source="{Binding PictureUrl}" 
+                                           HeightRequest="100" WidthRequest="100" 
+                                           Aspect="AspectFill" 
+                                           VerticalOptions="Center" />
                                     <!-- Join Button -->
-                                    <Button Text="Join" 
-                                            BackgroundColor="#4CAF50" 
-                                            TextColor="White" 
-                                            CornerRadius="8" 
-                                            Command="{Binding Source={x:Reference FindEventPage}, Path=BindingContext.JoinCommand}" 
-                                            CommandParameter="{Binding EventId}" />
-                                </StackLayout>
+                                    <Button Text="Join"
+                                       BackgroundColor="orange"
+                                       TextColor="White"
+                                       Grid.Row="1"
+                                       Grid.ColumnSpan="2"
+                                       Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:FindEventsViewModel}}, Path=JoinCommand}"
+                                       CommandParameter="{Binding .}" />
+                                </Grid>
                             </Frame>
                         </ViewCell>
                     </DataTemplate>

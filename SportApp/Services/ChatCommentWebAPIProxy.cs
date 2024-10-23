@@ -8,18 +8,16 @@ using System.Threading.Tasks;
 using SportApp.Models;
 using System.Net.Http.Json;
 using Microsoft.Extensions.Logging;
+
 namespace SportApp.Services
 {
-    class EventActionsWebAPIProxy
+    class ChatCommentWebAPIProxy
     {
         private HttpClient client;
         private JsonSerializerOptions jsonSerializerOptions;
         private string baseUrl;
         public static string BaseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5274/api/" : "http://localhost:5274/api/";
-
-        public List<Event> events { get; set;}
-
-        public EventActionsWebAPIProxy()
+        public ChatCommentWebAPIProxy()
         {
             //Set client handler to support cookies!!
             HttpClientHandler handler = new HttpClientHandler();
@@ -34,14 +32,14 @@ namespace SportApp.Services
             };
         }
 
-        public async Task<List<Event>> GetEventsAsync()
+        public async Task<List<ChatComment>> GetChatCommentsAsync()
         {
             //Set URI to the specific function API
-            string url = $"{this.baseUrl}Events";
+            string url = $"{this.baseUrl}ChatComment";
             try
             {
-                var events = await client.GetFromJsonAsync<List<Event>>(url);
-                return events; // Return the list of events
+                var chatComments = await client.GetFromJsonAsync<List<ChatComment>>(url);
+                return chatComments; // Return the list of events
             }
             catch (Exception ex)
             {
@@ -49,13 +47,14 @@ namespace SportApp.Services
                 return null;
             }
         }
-        public async Task<string> status()
+        public async Task<List<ChatComment>> GetEventChatCommentsAsync(int eventId)
         {
-            string url = $"{this.baseUrl}Events/status";
+            //Set URI to the specific function API
+            string url = $"{this.baseUrl}ChatComment/event/{eventId}";
             try
             {
-                var events = await client.GetFromJsonAsync<string>(url);
-                return events;
+                var chatComments = await client.GetFromJsonAsync<List<ChatComment>>(url);
+                return chatComments; // Return the list of events
             }
             catch (Exception ex)
             {
@@ -63,13 +62,13 @@ namespace SportApp.Services
                 return null;
             }
         }
-        public async Task<Event> GetEventAsync(int eventId)
+        public async Task<ChatComment> GetChatCommentAsync(int chatCommentId)
         {
-            string url = $"{this.baseUrl}Events/{eventId}";
+            string url = $"{this.baseUrl}ChatComment/{chatCommentId}";
             try
             {
-                var events = await client.GetFromJsonAsync<Event>(url);
-                return events; // Return the list of events
+                var chatComments = await client.GetFromJsonAsync<ChatComment>(url);
+                return chatComments; // Return the list of events
             }
             catch (Exception ex)
             {
@@ -77,15 +76,15 @@ namespace SportApp.Services
                 return null;
             }
         }
-        public async Task<bool> putEventAsync(Event updatedEvent)
+        public async Task<bool> PutChatCommentAsync(ChatComment updatedchatComment)
         {
             try
             {
                 // Serialize the updated object to JSON
-                var content = JsonContent.Create(updatedEvent);
+                var content = JsonContent.Create(updatedchatComment);
 
                 // Send the PUT request to the appropriate endpoint (e.g., /events/{id})
-                var response = await client.PutAsync($"{baseUrl}UserToEvents/{updatedEvent.EventId}", content);
+                var response = await client.PutAsync($"{baseUrl}ChatComment/{updatedchatComment.CommentId}", content);
 
                 // Check if the request was successful (HTTP 2xx)
                 return response.IsSuccessStatusCode;
@@ -97,9 +96,9 @@ namespace SportApp.Services
                 return false;
             }
         }
-        public async Task DeleteEventAsync(int eventId)
+        public async Task DeleteChatCommentAsync(int chatCommentId)
         {
-            string url = $"{this.baseUrl}Events/{eventId}";
+            string url = $"{this.baseUrl}ChatComment/{chatCommentId}";
             try
             {
                 await client.DeleteAsync(url);
@@ -110,12 +109,12 @@ namespace SportApp.Services
             }
 
         }
-        public async Task<bool> PostEventAsync(Event events)
+        public async Task<bool> PostChatCommentAsync(ChatComment chatComments)
         {
-            string url = $"{this.baseUrl}Events";
-            try 
-            { 
-                string json = JsonSerializer.Serialize(events, jsonSerializerOptions);
+            string url = $"{this.baseUrl}ChatComments";
+            try
+            {
+                string json = JsonSerializer.Serialize(chatComments, jsonSerializerOptions);
                 //string json = JsonSerializer.Serialize(new{ Email=email,Password=password},jsonSerializerOptions);
                 StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PostAsync(url, content);
@@ -135,6 +134,5 @@ namespace SportApp.Services
                 return false; // Return false on error
             }
         }
-
     }
 }
