@@ -112,18 +112,16 @@
                                                 FontAttributes="Bold"
                                                 FontFamily="Consolas"
                                                 Text="Don't have an account?" />
-                                            <Span
-                                                FontAttributes="Bold"
-                                                FontFamily="Consolas"
-                                                Text="Sign Up"
-                                                TextColor="{StaticResource Primary}"
-                                                
-                                                
-                                                TextDecorations="Underline" />
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
 
+                                <Button
+                                Margin="0,20,0,0"
+                                Command="{Binding SignUpCommand}"
+                                HorizontalOptions="FillAndExpand"
+                                Text="Signup"
+                                VerticalOptions="CenterAndExpand" />
                             </VerticalStackLayout>
 
                         </VerticalStackLayout>

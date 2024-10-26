@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -11,15 +9,15 @@ using Microsoft.Extensions.Logging;
 
 namespace SportApp.Services
 {
-    class EventToUserWebApiProxy
+    class CommentWebApiProxy
     {
         private HttpClient client;
         private JsonSerializerOptions jsonSerializerOptions;
         private string baseUrl;
         public static string BaseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5274/api/" : "http://localhost:5274/api/";
-        public List<UserToEvent> events { get; set; }
+        public List<Comment> events { get; set; }
 
-        public EventToUserWebApiProxy()
+        public CommentWebApiProxy()
         {
             //Set client handler to support cookies!!
             HttpClientHandler handler = new HttpClientHandler();
@@ -34,13 +32,28 @@ namespace SportApp.Services
             };
         }
 
-        public async Task<List<UserToEvent>> GetEventsAsync()
+        public async Task<List<Comment>> GetCommentsAsync()
         {
             //Set URI to the specific function API
-            string url = $"{this.baseUrl}UserToEvent";
+            string url = $"{this.baseUrl}Comments";
             try
             {
-                var events = await client.GetFromJsonAsync<List<UserToEvent>>(url);
+                var events = await client.GetFromJsonAsync<List<Comment>>(url);
+                return events; // Return the list of events
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return null;
+            }
+        }
+        public async Task<List<Comment>> GetUserCommentsAsync(int userid)
+        {
+            //Set URI to the specific function API
+            string url = $"{this.baseUrl}Comments/user/{userid}";
+            try
+            {
+                var events = await client.GetFromJsonAsync<List<Comment>>(url);
                 return events; // Return the list of events
             }
             catch (Exception ex)
@@ -50,12 +63,12 @@ namespace SportApp.Services
             }
         }
 
-        public async Task<UserToEvent> GetEventAsync(int eventId)
+        public async Task<Comment> GetCommentAsync(int eventId)
         {
-            string url = $"{this.baseUrl}UserToEvent/{eventId}";
+            string url = $"{this.baseUrl}Comments/{eventId}";
             try
             {
-                var events = await client.GetFromJsonAsync<UserToEvent>(url);
+                var events = await client.GetFromJsonAsync<Comment>(url);
                 return events; // Return the list of events
             }
             catch (Exception ex)
@@ -64,30 +77,9 @@ namespace SportApp.Services
                 return null;
             }
         }
-        public async Task<bool> putUserToEventAsync(UserToEvent updatedUserToEvent)
+        public async Task<bool> DeleteCommentAsync(int eventId)
         {
-            try
-            {
-                // Serialize the updated object to JSON
-                var content = JsonContent.Create(updatedUserToEvent);
-
-                // Send the PUT request to the appropriate endpoint (e.g., /events/{id})
-                var response = await client.PutAsync($"{baseUrl}UserToEvent/{updatedUserToEvent.TableId}", content);
-
-                // Check if the request was successful (HTTP 2xx)
-                return response.IsSuccessStatusCode;
-            }
-            catch (Exception ex)
-            {
-                // Log the error and return false to indicate failure
-                Console.WriteLine($"Error updating UserToEvent: {ex.Message}");
-                return false;
-            }
-        }
-
-        public async Task<bool> DeleteEventAsync(int eventId)
-        {
-            string url = $"{this.baseUrl}UserToEvent/{eventId}";
+            string url = $"{this.baseUrl}Comments/{eventId}";
             try
             {
                 await client.DeleteAsync(url);
@@ -100,12 +92,13 @@ namespace SportApp.Services
             }
 
         }
-        public async Task<bool> PostEventAsync(UserToEvent events)
+        public async Task<bool> PostUserAsync(Comment events)
         {
-            string url = $"{this.baseUrl}UserToEvent";
+            string url = $"{this.baseUrl}Comments";
             try
             {
                 string json = JsonSerializer.Serialize(events, jsonSerializerOptions);
+                //string json = JsonSerializer.Serialize(new{ Email=email,Password=password},jsonSerializerOptions);
                 StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PostAsync(url, content);
                 if (response.IsSuccessStatusCode)

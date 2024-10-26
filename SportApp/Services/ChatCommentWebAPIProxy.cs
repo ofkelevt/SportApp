@@ -111,7 +111,7 @@ namespace SportApp.Services
         }
         public async Task<bool> PostChatCommentAsync(ChatComment chatComments)
         {
-            string url = $"{this.baseUrl}ChatComments";
+            string url = $"{this.baseUrl}ChatComment";
             try
             {
                 string json = JsonSerializer.Serialize(chatComments, jsonSerializerOptions);

@@ -1,6 +1,7 @@
 ﻿using SportApp.Models;
 using System;
 using System.Windows.Input;
+using SportApp.Views;
 using SportApp.Services;
 
 namespace SportApp.ViewModels
@@ -77,7 +78,8 @@ namespace SportApp.ViewModels
                 "Event created successfully!", "OK");
 
             // Navigate back to the events list or another page
-            await App.Current.MainPage.Navigation.PopAsync();
+            var findeventpage = App.Current.Handler.MauiContext.Services.GetService<FindEvent>();
+            await Shell.Current.Navigation.PushAsync(findeventpage);
         }
     }
 }

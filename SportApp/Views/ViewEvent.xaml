@@ -216,10 +216,21 @@
                         
                     </Button.Triggers>
                 </Button>
+                <Button Text="Leave Event" 
+                        Command="{Binding LeaveCommand}" 
+                        BackgroundColor="Red" TextColor="White" 
+                        Margin="0,10,0,0" HeightRequest="50">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding IsJoin}" Value="false">
+                            <Setter Property="IsVisible" Value="False"/>
+                        </DataTrigger>
+
+                    </Button.Triggers>
+                </Button>
                 <Button Text="Save Changes" Command="{Binding SaveCommand}" 
                         BackgroundColor="#4CAF50" TextColor="White" HeightRequest="50">
                     <Button.Triggers>
-                        <DataTrigger TargetType="Button" Binding="{Binding IsCreator}" Value="False">
+                        <DataTrigger TargetType="Button" Binding="{Binding IsCreator}" Value="false">
                             <Setter Property="IsVisible" Value="False"/>
                         </DataTrigger>
                     </Button.Triggers>
@@ -227,7 +238,7 @@
                 <CollectionView ItemsSource="{Binding ChatComments}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="Models:ChatComment">
-                            <Grid RowDefinitions="Auto,Auto,Auto">
+                            <Grid RowDefinitions="Auto,Auto,Auto,Auto">
                                 <HorizontalStackLayout Grid.Row="0">
                                     <Image Source="{Binding Commenter.PictureUrl}" HeightRequest="40" WidthRequest="40" Aspect="AspectFill"/>
                                     <Label Text="{Binding Commenter.Username, FallbackValue='[No Username]'}" FontSize="16"/>
@@ -237,23 +248,39 @@
                                     <Label Text="{Binding Commenter.LastName}" FontSize="16"/>
                                 </HorizontalStackLayout>
                                 <Frame CornerRadius="15" HasShadow="True" Grid.Row="2">
-                                    <Label Text="{Binding CommentText}" FontSize="16"/>
+                                    <StackLayout>
+                                        <Label Text="{Binding CommentText}" FontSize="16"/>
+                                        <Label Text="{Binding CreatedAt, StringFormat='Reported on: {0:MMM dd, yyyy HH:mm}'}" />
+                                    </StackLayout>
                                 </Frame>
+                                <Button Text="Delete" TextColor="White" BackgroundColor="Red" 
+                Grid.Row="2" HorizontalOptions="End" WidthRequest="80"
+                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ViewEventViewModel}}, Path=DelteCommantCommand}" 
+                CommandParameter="{Binding .}">
+                                    <Button.Triggers>
+                                        <DataTrigger TargetType="Button" Binding="{Binding IsCommenter}" Value="false">
+                                            <Setter Property="IsVisible" Value="False"/>
+                                        </DataTrigger>
+
+                                    </Button.Triggers>
+                                </Button>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                <Entry Text="{Binding CommentText}">
-                    <Entry.Triggers>
-                        <DataTrigger TargetType="Entry" Binding="{Binding IsCratorOrJoin}" Value="False">
-                            <Setter Property="IsVisible" Value="False"/>
-                        </DataTrigger>
-                    </Entry.Triggers>
-                </Entry>
-                <Button Text="Save Changes" Command="{Binding CommentCommand}" 
+                <Frame CornerRadius="15" HasShadow="True">
+                    <Entry Text="{Binding CommentText}" IsVisible="{Binding IsCratorOrJoin}">
+                        <Entry.Triggers>
+                            <DataTrigger TargetType="Entry" Binding="{Binding IsCratorOrJoin}" Value="False">
+                                <Setter Property="IsVisible" Value="False"/>
+                            </DataTrigger>
+                        </Entry.Triggers>
+                    </Entry>
+                </Frame>
+                <Button Text="upload comments " Command="{Binding CommentCommand}"
                         BackgroundColor="#4CAF50" TextColor="White" HeightRequest="50">
                     <Button.Triggers>
-                        <DataTrigger TargetType="Button" Binding="{Binding IsCratorOrJoin}" Value="False">
+                        <DataTrigger TargetType="Button" Binding="{Binding IsCratorOrJoin}" Value="false">
                             <Setter Property="IsVisible" Value="False"/>
                         </DataTrigger>
                     </Button.Triggers>

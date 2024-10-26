@@ -20,8 +20,8 @@ namespace SportApp.Models
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public Users Commenter { get; set; }
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public Users CommentedOn { get; set; }
+        [JsonIgnore]
+        public bool IsCommenter { get; set; }
     }
 
 }

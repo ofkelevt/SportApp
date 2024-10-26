@@ -7,20 +7,31 @@
        x:DataType="vm:AppShellViewModel"
         Shell.FlyoutBehavior="Disabled">
     <TabBar>
-    <ShellContent
+        <ShellContent
         ContentTemplate="{DataTemplate Views:FindEvent}"
         Route="FindEvent"
         Title="FindEvent"/>
         <ShellContent
-    Title="Login"
-    ContentTemplate="{DataTemplate Views:LoginView}"
-    Route="LoginView" 
-            IsVisible="{Binding IsntLoggedIn}"/>
+        Title="Login"
+        ContentTemplate="{DataTemplate Views:LoginView}"
+        Route="LoginView" 
+                IsVisible="{Binding IsntLoggedIn}"/>
         <ShellContent
             Title="CreateEvent"
             ContentTemplate="{DataTemplate Views:CrateEvent}"
             Route="CrateEvent"
             IsVisible="{Binding IsLoggedIn}"/>
+        <ShellContent
+                Title="Logout"
+                ContentTemplate="{DataTemplate Views:Logout}"
+                Route="Logout"
+                IsVisible="{Binding IsLoggedIn}"/>
+        <ShellContent 
+            Title="profile"
+            ContentTemplate="{DataTemplate Views:UserDetailsPage}"
+            Route="UserDetailsPage"
+            IsVisible="{Binding IsLoggedIn}"/>
     </TabBar>
     <ShellContent Route="ViewEvent" ContentTemplate="{DataTemplate Views:ViewEvent}" />
+    <ShellContent Route="SingUpPage" ContentTemplate="{DataTemplate Views:SignUpPage}"/>
 </Shell>

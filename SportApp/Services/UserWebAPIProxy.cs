@@ -62,16 +62,18 @@ namespace SportApp.Services
                 return null;
             }
         }
-        public async void DeleteUserAsync(int eventId)
+        public async Task<bool> DeleteUserAsync(int eventId)
         {
             string url = $"{this.baseUrl}Users/{eventId}";
             try
             {
                 await client.DeleteAsync(url);
+                return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"An error occurred: {ex.Message}");
+                return false;
             }
 
         }

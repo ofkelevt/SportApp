@@ -17,7 +17,7 @@ namespace SportApp.Models
         [JsonIgnore]
         public Users Commenter { get; set; }
         [JsonIgnore]
-        public Event Event { get; set; }
+        public bool IsCommenter { get; set; }
     }
 
 }

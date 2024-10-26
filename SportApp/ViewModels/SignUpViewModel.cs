@@ -1,6 +1,7 @@
 ﻿using SportApp.Models;
 using SportApp.Services;
 using System;
+using SportApp.Views;
 using System.Windows.Input;
 
 namespace SportApp.ViewModels
@@ -79,12 +80,6 @@ namespace SportApp.ViewModels
             set { _user.Description = value; OnPropertyChanged(nameof(Description)); }
         }
 
-        public int Urank
-        {
-            get => _user.Urank;
-            set { _user.Urank = value; OnPropertyChanged(nameof(Urank)); }
-        }
-
         private async Task SignUp()
         {
             if (string.IsNullOrWhiteSpace(_user.Username) ||
@@ -101,6 +96,7 @@ namespace SportApp.ViewModels
             {
                 // Assume UserId is set to 0/null on backend to create a new user
                 _user.UserId = 0;
+                _user.Urank = 1; 
                 bool success = await proxy.PostUserAsync(_user);
                 if (!success)
                 {
@@ -115,7 +111,8 @@ namespace SportApp.ViewModels
                     "User registered successfully!", "OK");
 
                 // Navigate to login or main page after successful registration
-                await App.Current.MainPage.Navigation.PopAsync();
+                await Shell.Current.GoToAsync("//FindEvent");
+
             }
             catch (Exception ex)
             {

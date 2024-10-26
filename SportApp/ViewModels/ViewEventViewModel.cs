@@ -68,6 +68,8 @@ namespace SportApp.ViewModels
         public ICommand RejectCommand { get; }
         public ICommand AcceptCommand { get; }
         public ICommand CommentCommand { get; }
+        public ICommand DelteCommantCommand { get; }
+        public ICommand LeaveCommand { get; }
 
         private bool isCreator;
         public bool IsCreator { get { return isCreator; } set {isCreator = value; OnPropertyChanged(nameof(IsCreator)); } }
@@ -101,6 +103,8 @@ namespace SportApp.ViewModels
             RejectCommand = new Command(async () => await OnRejectUsers());
             AcceptCommand = new Command(async () => await OnAcceptUsers());
             CommentCommand = new Command(async ()=> await Comment());
+            DelteCommantCommand = new Command<ChatComment>(async (u) => await DelteComment(u));
+            LeaveCommand = new Command(async ()=> await OnLeave());
             IsRefreshing = true;
         }
         private async Task Refresh()
@@ -112,19 +116,20 @@ namespace SportApp.ViewModels
                 SelectedEvent = await proxyEvent.GetEventAsync(SelectedEvent.EventId);
                 SelectedEvent.Crator = await proxyUser.GetUserAsync(SelectedEvent.CratorId);
                 OnPropertyChanged(nameof(SelectedEvent));
-                await proxyloginDemoWebAPI.CheckAsync();
+                var t = await proxyloginDemoWebAPI.CheckAsync();
                 IsCreator = (proxyloginDemoWebAPI.LoggedInUser != null && SelectedEvent.CratorId == proxyloginDemoWebAPI.LoggedInUser.UserId);
                 ChatComments.Clear();
                 var s = await proxyChatComment.GetEventChatCommentsAsync(SelectedEvent.EventId);
-                if(s != null)   
+                if (s != null)
                     foreach (var comment in s)
                     {
                         comment.Commenter = await proxyUser.GetUserAsync(comment.CommenterId);
+                        comment.IsCommenter = IsCreator || (proxyloginDemoWebAPI.LoggedInUser != null && comment.CommenterId == proxyloginDemoWebAPI.LoggedInUser.UserId);
                         ChatComments.Add(comment);
                     }
                 OnPropertyChanged(nameof(ChatComments));
                 UserToEvents = new ObservableCollection<UserToEvent>((await proxyEventToUser.GetEventsAsync()).Where(e => e.EventId == SelectedEvent.EventId));
-                IsJoin = (proxyloginDemoWebAPI.LoggedInUser != null && UserToEvents.First(u => u.UserId == proxyloginDemoWebAPI.LoggedInUser.UserId) != null);
+                IsJoin = (proxyloginDemoWebAPI.LoggedInUser != null && UserToEvents.Where(u => u.UserId == proxyloginDemoWebAPI.LoggedInUser.UserId).Count() > 0);
                 IsCratorOrJoin = IsJoin || IsCreator;
                 //attend
                 Users.Clear();
@@ -132,17 +137,21 @@ namespace SportApp.ViewModels
                 WaitListedUsers.Clear();
                 foreach (var e in UserToEvents)
                 {
-                    if(e.RealtionshipType == "attend")
+                    if (e.RealtionshipType == "attend")
                         Users.Add(await proxyUser.GetUserAsync(e.UserId));
                     else
                         WaitListedUsers.Add(await proxyUser.GetUserAsync(e.UserId));
                 }
-                foreach(var e in Users)
+                foreach (var e in Users)
                     e.IsCheck = false;
-                foreach(var e in waitListedUsers)
+                foreach (var e in waitListedUsers)
                     e.IsCheck = false;
                 OnPropertyChanged(nameof(Users));
                 OnPropertyChanged(nameof(WaitListedUsers));
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Load Screen", $"error has aqured: {ex}", "ok");
             }
             finally { IsRefreshing = false; }
         }
@@ -175,6 +184,33 @@ namespace SportApp.ViewModels
                 var viewModel = new LoginViewModel(proxyloginDemoWebAPI);
                 var viewEventPage = new LoginView(viewModel);
                 await Shell.Current.Navigation.PushAsync(viewEventPage);
+            }
+        }
+        private async Task OnLeave()
+        {
+            if (!isJoin)
+            {
+                await Application.Current.MainPage.DisplayAlert("leave event", $"already not in event", "ok");
+                return;
+            }
+            try
+            {
+                var connection = (await proxyEventToUser.GetEventsAsync()).Where(u => u.EventId == selcetedEvent.EventId && u.UserId == proxyloginDemoWebAPI.LoggedInUser.UserId).First();
+                var e = await proxyEventToUser.DeleteEventAsync(connection.TableId);
+                if (!e)
+                {
+                    await Application.Current.MainPage.DisplayAlert("leave event", $"error happend while trying to exit event", "ok");
+                    return;
+                }
+            }
+            catch (Exception ex) 
+            {
+                await Application.Current.MainPage.DisplayAlert("leave event", $"error happend while trying to exit event :{ex}", "ok");
+                return;
+            }
+            finally
+            {
+                IsRefreshing = true;
             }
         }
         public async Task Save()
@@ -273,6 +309,19 @@ namespace SportApp.ViewModels
                 await Application.Current.MainPage.DisplayAlert("join", $"error: {ex}", "ok");
             }
             finally { IsRefreshing = true; }
+        }
+        private async Task DelteComment(ChatComment comment)
+        {
+            try
+            {
+                await proxyChatComment.DeleteChatCommentAsync(comment.CommentId);
+                IsRefreshing = true;
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Delete Comment", $"error: {ex}", "ok");
+            }
+
         }
     }
 }

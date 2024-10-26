@@ -27,7 +27,12 @@ public static class MauiProgram
         builder.Services.AddSingleton<LoginDemoWebAPIProxy>();
 		builder.Services.AddTransient<CrateEventViewModel>();
 		builder.Services.AddTransient<CrateEvent>();
-
+        builder.Services.AddTransient<SignUpViewModel>();
+        builder.Services.AddTransient<SignUpPage>();
+		builder.Services.AddTransient<LogoutViewModel>();
+		builder.Services.AddTransient<Logout>();
+		builder.Services.AddTransient<UserDetailsViewModel>();
+		builder.Services.AddTransient<UserDetailsPage>();
 #if DEBUG
         builder.Logging.AddDebug();
 #endif

@@ -12,6 +12,9 @@
         <Entry Placeholder="Last Name" Text="{Binding LastName}" />
         <Entry Placeholder="Phone Number" Text="{Binding PhoneNum}" Keyboard="Telephone" />
         <Entry Placeholder="City Name" Text="{Binding CityName}" />
+        <Entry Placeholder="Street Name" Text="{Binding StreetName}" />
+        <Entry Placeholder="Home Num" Text="{Binding HomeNum}" />
+        <Entry Placeholder="Profile Picture" Text="{Binding PictureUrl}" />
         <Button Text="Sign Up" Command="{Binding SignUpCommand}" />
     </StackLayout>
 </ContentPage>

@@ -3,9 +3,9 @@ namespace SportApp.Views;
 
 public partial class SignUpPage : ContentPage
 {
-	public SignUpPage()
+	public SignUpPage(SignUpViewModel vm)
 	{
 		InitializeComponent();
-        this.BindingContext = new SignUpViewModel();
-    }
+		this.BindingContext = vm;
+	}
 }
