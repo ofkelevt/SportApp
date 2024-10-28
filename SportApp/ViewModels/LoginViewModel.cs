@@ -92,6 +92,7 @@ namespace SportApp.ViewModels
 
                 await Application.Current.MainPage.DisplayAlert("Login", "Login Faild!", "ok");
                 var shellViewModel = (AppShellViewModel)App.Current.MainPage.BindingContext;
+                shellViewModel.IsAdmin = false;
                 shellViewModel.IsLoggedIn = false;
             }
             else
@@ -99,6 +100,8 @@ namespace SportApp.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Login", $"Login Succeed! for {u.Username}", "ok");
                 var shellViewModel = (AppShellViewModel)App.Current.MainPage.BindingContext;
                 shellViewModel.IsLoggedIn = true;
+                if(u.Urank == 2)
+                    shellViewModel.IsAdmin = true;
                 await Shell.Current.GoToAsync("//FindEvent");
             }
         }

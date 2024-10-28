@@ -195,6 +195,7 @@ namespace SportApp.ViewModels
             }
             try
             {
+                //var comments = (await proxyChatComment.GetChatCommentsAsync()).Where(u=> u.CommenterId;
                 var connection = (await proxyEventToUser.GetEventsAsync()).Where(u => u.EventId == selcetedEvent.EventId && u.UserId == proxyloginDemoWebAPI.LoggedInUser.UserId).First();
                 var e = await proxyEventToUser.DeleteEventAsync(connection.TableId);
                 if (!e)

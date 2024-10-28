@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:SportApp.Models"
+             xmlns:viewModels="clr-namespace:SportApp.ViewModels"
+             x:Class="SportApp.Views.AdminPage"
+             Title="Admin Dashboard">
+
+    <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
+        <CollectionView ItemsSource="{Binding Users}" Margin="10">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Users">
+                    <Grid ColumnDefinitions="2*,*,*" Padding="5">
+                        <StackLayout Grid.Column="0" Orientation="Horizontal" Spacing="10">
+                            <Image Source="{Binding PictureUrl}" 
+                                   HeightRequest="50" 
+                                   WidthRequest="50" 
+                                   Aspect="AspectFill"/>
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Username}" FontAttributes="Bold" FontSize="18"/>
+                                <Label Text="{Binding FirstName}" FontSize="14"/>
+                                <Label Text="{Binding LastName}" FontSize="14"/>
+                            </VerticalStackLayout>
+                        </StackLayout>
+
+                        <Label Grid.Column="1" 
+                               Text="{Binding Rating}" 
+                               FontSize="18" 
+                               VerticalOptions="Center" 
+                               HorizontalOptions="Center" />
+
+                        <Label Grid.Column="2" 
+                               Text="{Binding ReportCount}" 
+                               FontSize="18" 
+                               VerticalOptions="Center" 
+                               HorizontalOptions="Center" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
+</ContentPage>

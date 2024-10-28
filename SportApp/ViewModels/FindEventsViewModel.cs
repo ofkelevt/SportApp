@@ -18,7 +18,7 @@ namespace SportApp.ViewModels
             set 
             {
                 events = value;
-                OnPropertyChanged(nameof(Events));
+                OnPropertyChanged("Events");
             }
         }
         public ObservableCollection<Users> Users { get; set; }
@@ -27,6 +27,7 @@ namespace SportApp.ViewModels
         public ICommand FilterCommandC { get; set; }
         public ICommand RefreshCommand { get; set; }
         public ICommand JoinCommand { get; }
+        public ICommand fuck { get; }
 
         private string input1;
         public string Input1
@@ -85,6 +86,7 @@ namespace SportApp.ViewModels
             FilterCommandS = new Command(async()=>await ApplyFilterS());
             FilterCommandC = new Command(async ()=> await ApplyFilterC());
             JoinCommand = new Command<Event>(OnJoinEvent);
+            fuck = new Command(()=> fucking());
             IsRefreshing = true;
         }
         private async Task ExecuteRefresh()
@@ -170,6 +172,11 @@ namespace SportApp.ViewModels
                 foreach (Event s in e)
                     Events.Add(s);
         }
-
+        private void fucking()
+        {
+            var shellViewModel = (AppShellViewModel)App.Current.MainPage.BindingContext;
+            shellViewModel.IsAdmin = true;
+            IsRefreshing = true;
+        }
     }
 }

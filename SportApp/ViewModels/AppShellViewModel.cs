@@ -18,13 +18,21 @@ namespace SportApp.ViewModels
                 isLoggedIn = value;
                OnPropertyChanged(nameof(IsLoggedIn)); 
                OnPropertyChanged(nameof(IsntLoggedIn));
+                
             } 
         }
+        private bool isAdmin;
+        public bool IsAdmin { get => isAdmin; set { isAdmin = value; OnPropertyChanged(nameof(IsAdmin)); Refresh(); } }
         public bool IsntLoggedIn { get { return !isLoggedIn; }}
         public AppShellViewModel()
         {
             IsLoggedIn = false;
         }
-        
+        public void Refresh()
+        {
+            OnPropertyChanged(nameof(IsLoggedIn));
+            OnPropertyChanged(nameof(IsntLoggedIn));
+            OnPropertyChanged("IsAdmin");
+        }
     }
 }

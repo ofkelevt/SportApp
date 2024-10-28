@@ -12,7 +12,7 @@
         Route="FindEvent"
         Title="FindEvent"/>
         <ShellContent
-        Title="Login"
+        Title="LoginView"
         ContentTemplate="{DataTemplate Views:LoginView}"
         Route="LoginView" 
                 IsVisible="{Binding IsntLoggedIn}"/>
@@ -27,11 +27,16 @@
                 Route="Logout"
                 IsVisible="{Binding IsLoggedIn}"/>
         <ShellContent 
-            Title="profile"
+            Title="UserDetailsPage"
             ContentTemplate="{DataTemplate Views:UserDetailsPage}"
             Route="UserDetailsPage"
             IsVisible="{Binding IsLoggedIn}"/>
+        <ShellContent 
+            Title="AdminPage"
+            ContentTemplate="{DataTemplate Views:AdminPage}"
+            Route="AdminPage"
+            IsVisible="{Binding IsAdmin}"/>
     </TabBar>
-    <ShellContent Route="ViewEvent" ContentTemplate="{DataTemplate Views:ViewEvent}" />
-    <ShellContent Route="SingUpPage" ContentTemplate="{DataTemplate Views:SignUpPage}"/>
+    <!--<ShellContent Route="ViewEvent" ContentTemplate="{DataTemplate Views:ViewEvent}" />
+    <ShellContent Route="SingUpPage" ContentTemplate="{DataTemplate Views:SignUpPage}"/>-->
 </Shell>

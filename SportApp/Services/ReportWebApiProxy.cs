@@ -77,7 +77,7 @@ namespace SportApp.Services
                 return null;
             }
         }
-        public async void DeleteReportAsync(int eventId)
+        public async Task DeleteReportAsync(int eventId)
         {
             string url = $"{this.baseUrl}Reports/{eventId}";
             try

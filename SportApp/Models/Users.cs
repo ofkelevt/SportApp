@@ -25,6 +25,10 @@ namespace SportApp.Models
         public string? Description { get; set; }
         [JsonIgnore]
         public bool IsCheck { get; set; } = false;
+        [JsonIgnore]
+        public int Rating { get; set; }
+        [JsonIgnore]
+        public int ReportCount { get; set; }
     }
 
 }

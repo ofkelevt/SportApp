@@ -11,6 +11,9 @@ namespace SportApp.ViewModels
         private LoginDemoWebAPIProxy proxyLogin;
         private ReportWebApiProxy proxyReport;
         private CommentWebApiProxy proxyComment;
+        private EventActionsWebAPIProxy proxyEvent;
+        private ChatCommentWebAPIProxy proxyChatComment;
+        private EventToUserWebApiProxy proxyEventToUser;
         private Users _user;
         private ObservableCollection<Comment> comments;
         public ObservableCollection<Comment> Comments { get { return comments; } set { comments = value; OnPropertyChanged(nameof(Comments)); } }
@@ -60,6 +63,9 @@ namespace SportApp.ViewModels
             proxyUser = new UserWebAPIProxy();
             proxyComment = new CommentWebApiProxy();
             proxyReport = new ReportWebApiProxy();
+            proxyEvent = new EventActionsWebAPIProxy();
+            proxyChatComment = new ChatCommentWebAPIProxy();
+            proxyEventToUser = new EventToUserWebApiProxy();
             Comments = new ObservableCollection<Comment>();
             Reports = new ObservableCollection<Report>();
 
@@ -204,6 +210,27 @@ namespace SportApp.ViewModels
             }
             try
             {
+                var events = (await proxyEvent.GetEventsAsync()).Where(u => u.CratorId == User.UserId);
+                var t = new List<Event>(events);
+                foreach(var ee in t)
+                {
+                    var s = (await proxyEventToUser.GetEventsAsync()).Where(u => u.EventId == ee.EventId);
+                    foreach (var s2 in s)
+                        await proxyEventToUser.DeleteEventAsync(s2.TableId);
+                    await proxyEvent.DeleteEventAsync(ee.EventId);
+                }
+                var comment = await proxyComment.GetUserCommentsAsync(User.UserId);
+                var tempcomment = new List<Comment>(comment);
+                foreach(var ee in  tempcomment)
+                    await proxyComment.DeleteCommentAsync(ee.CommentId);
+                var chatcomment = (await proxyChatComment.GetChatCommentsAsync()).Where(u => u.CommenterId == User.UserId); ;
+                var tempchatcomment = new List<ChatComment>(chatcomment);
+                foreach (var ee in tempchatcomment)
+                    await proxyChatComment.DeleteChatCommentAsync(ee.CommentId);
+                var report = (await proxyReport.GetUserReportsAsync(User.UserId));
+                var tempreport = new List<Report>(report);
+                foreach (var ee in tempreport)
+                    await proxyReport.DeleteReportAsync(ee.ReportId);
                 bool e = await proxyUser.DeleteUserAsync(User.UserId);
                 if(!e)
                 {

@@ -49,6 +49,7 @@ namespace SportApp.Services
                 {
                     var shellViewModel = (AppShellViewModel)App.Current.MainPage.BindingContext;
                     shellViewModel.IsLoggedIn = true;
+                    
                     //Extract the content as string
                     string resContent = await response.Content.ReadAsStringAsync();
                     //Desrialize result
@@ -57,6 +58,8 @@ namespace SportApp.Services
                         PropertyNameCaseInsensitive = true
                     };
                     LoggedInUser = JsonSerializer.Deserialize<Users>(resContent, options);
+                    if (LoggedInUser.UserId == 2)
+                        shellViewModel.IsAdmin = true;
                     return LoggedInUser;
                 }
                 else
@@ -90,6 +93,8 @@ namespace SportApp.Services
                     LoggedInUser = JsonSerializer.Deserialize<Users>(resContent, options);
                     var shellViewModel = (AppShellViewModel)App.Current.MainPage.BindingContext;
                     shellViewModel.IsLoggedIn = true;
+                    if (LoggedInUser.UserId == 2)
+                        shellViewModel.IsAdmin = true;
                     return resContent;
                 }
                 else
@@ -132,6 +137,9 @@ namespace SportApp.Services
                 }
 
                 LoggedInUser = null;
+                var shellViewModel = (AppShellViewModel)App.Current.MainPage.BindingContext;
+                shellViewModel.IsLoggedIn = false;
+                shellViewModel.IsAdmin = false;
                 return true;
             }
             catch (Exception ex)

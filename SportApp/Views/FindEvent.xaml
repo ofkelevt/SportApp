@@ -23,6 +23,7 @@
 
         <!-- Filter Section -->
         <StackLayout Grid.Row="1" Orientation="Horizontal" Padding="10" Spacing="8">
+            <Button Command="{Binding fuck}"/>
             <Entry Placeholder="Event Name filter" 
                    Text="{Binding Input1}" 
                    HorizontalOptions="FillAndExpand" />
