@@ -47,7 +47,10 @@ namespace SportApp.ViewModels
         private int rating;
         public int Rating { get { return rating; } set { rating = value; OnPropertyChanged(nameof(Rating)); } }
         private bool isAdmin;
-        public bool IsAdmin { get { return isAdmin; } set { isAdmin = value;OnPropertyChanged(nameof(IsAdmin)); } }
+        public bool IsAdmin { 
+            get { return isAdmin; } 
+            set { isAdmin = value;
+                OnPropertyChanged(nameof(IsAdmin)); } }
         private int span;
         public int Span { get { return span; } set { span = value; OnPropertyChanged(nameof(Span)); } }
         public Command RefreshCommand { get; }
@@ -55,6 +58,7 @@ namespace SportApp.ViewModels
         public Command ReportCommand { get; }
         public Command BanCommand { get; }
         public Command DelteCommentCommand { get; }
+        public Command OnSave { get; }
 
         public UserDetailsViewModel(Users user = null)
         {
@@ -66,6 +70,7 @@ namespace SportApp.ViewModels
             proxyEvent = new EventActionsWebAPIProxy();
             proxyChatComment = new ChatCommentWebAPIProxy();
             proxyEventToUser = new EventToUserWebApiProxy();
+            
             Comments = new ObservableCollection<Comment>();
             Reports = new ObservableCollection<Report>();
 
@@ -75,6 +80,7 @@ namespace SportApp.ViewModels
             ReportCommand = new Command<string>(async (reportText) =>
                 await OnReport(reportText));
             BanCommand = new Command(async () => await OnBan());
+            OnSave = new Command(async () => await Save());
             DelteCommentCommand = new Command<Comment>(async (u) => await OnDelteComment(u));
             IsRefreshing = true;
         }
@@ -269,6 +275,22 @@ namespace SportApp.ViewModels
             {
                 await Application.Current.MainPage.DisplayAlert("Delete Comment", $"error: {ex}", "ok");
             }
+
+        }
+        private async Task Save()
+        {
+            try
+            {
+                var e = await proxyUser.PostUserAsync(User);
+                if (!e)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Save changes", $"error while saving changes", "ok");
+                }
+            }catch(Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Save chnages", $"error while saving changes :{ex}", "ok");
+            }
+            finally { IsRefreshing = true; }
 
         }
     }
