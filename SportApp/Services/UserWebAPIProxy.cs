@@ -102,5 +102,30 @@ namespace SportApp.Services
                 return false; // Return false on error
             }
         }
+        public async Task<bool> PutUserAsync(Users user)
+        {
+            string url = $"{this.baseUrl}Users/{user.UserId}"; // Assuming the user ID is part of the URL for the PUT request
+            try
+            {
+                string json = JsonSerializer.Serialize(user, jsonSerializerOptions);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PutAsync(url, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true; // User successfully updated
+                }
+                else
+                {
+                    return false; // Handle failure case
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (logging, rethrowing, etc.)
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return false; // Return false on error
+            }
+        }
     }
 }

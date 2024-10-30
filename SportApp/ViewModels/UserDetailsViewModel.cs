@@ -281,7 +281,7 @@ namespace SportApp.ViewModels
         {
             try
             {
-                var e = await proxyUser.PostUserAsync(User);
+                var e = await proxyUser.PutUserAsync(User);
                 if (!e)
                 {
                     await Application.Current.MainPage.DisplayAlert("Save changes", $"error while saving changes", "ok");

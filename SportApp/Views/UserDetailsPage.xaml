@@ -126,34 +126,34 @@ CommandParameter="{Binding Source={x:Reference CommentEntry}, Path=Text}" />
 CommandParameter="{Binding Source={x:Reference ReportEntry}, Path=Text}" />
                 </StackLayout>
 
-                <!-- Expander for Comments -->
-                <toolkit:Expander Grid.ColumnSpan="{Binding Span}" Grid.Row="1">
+                 <!--Expander for Comments--> 
+                <toolkit:Expander  Grid.Row="1">
                     <toolkit:Expander.Header>
                         <Button Text="View Comments" BackgroundColor="blue" TextColor="White"/>
                     </toolkit:Expander.Header>
-                    <CollectionView ItemsSource="{Binding Comments}">
+                    <CollectionView ItemsSource="{Binding Comments}"  Grid.Row="1">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="Models:Comment">
-                                <Grid RowDefinitions="Auto,Auto">
+                                <Grid RowDefinitions="Auto,Auto,Auto">
                                     <HorizontalStackLayout Grid.Row="0">
-                                        <Image Source="{Binding Commenter.PictureUrl}" HeightRequest="40" WidthRequest="40" Aspect="AspectFill"/>
-                                        <Label Text="{Binding Commenter.Username}" FontSize="16"/>
-                                        <!-- Checkbox Visible Only for Creator -->
+                                        <Image Source="{Binding Commenter.PictureUrl, FallbackValue='defaultImage.png'}" 
+                               HeightRequest="40" WidthRequest="40" Aspect="AspectFill"/>
+                                        <Label Text="{Binding Commenter.Username, FallbackValue='Anonymous'}" FontSize="16"/>
                                     </HorizontalStackLayout>
                                     <HorizontalStackLayout Grid.Row="1">
-                                        <Label Text="{Binding Commenter.FirstName}" FontSize="16"/>
-                                        <Label Text="{Binding Commenter.LastName}" FontSize="16"/>
+                                        <Label Text="{Binding Commenter.FirstName, FallbackValue='First Name'}" FontSize="16"/>
+                                        <Label Text="{Binding Commenter.LastName, FallbackValue='Last Name'}" FontSize="16"/>
                                     </HorizontalStackLayout>
                                     <Frame CornerRadius="15" HasShadow="True" Grid.Row="2">
                                         <StackLayout>
                                             <Label Text="{Binding CommentText}" />
-                                            <Label Text="{Binding CreatedAt, StringFormat='Reported on: {0:MMM dd, yyyy HH:mm}'}" />
+                                            <Label Text="{Binding CreatedAt, StringFormat='Reported on: {0:MMM dd, yyyy HH:mm}', FallbackValue='Date not available'}" />
                                         </StackLayout>
                                     </Frame>
                                     <Button Text="Delete" TextColor="White" BackgroundColor="Red" 
-         Grid.Row="2" HorizontalOptions="End" WidthRequest="80"
-         Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:UserDetailsViewModel}}, Path=DelteCommentCommand}" 
-         CommandParameter="{Binding .}">
+                            Grid.Row="2" HorizontalOptions="End" WidthRequest="80"
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:UserDetailsViewModel}}, Path=DeleteCommentCommand}" 
+                            CommandParameter="{Binding .}">
                                         <Button.Triggers>
                                             <DataTrigger TargetType="Button" Binding="{Binding IsCommenter}" Value="false">
                                                 <Setter Property="IsVisible" Value="False"/>
@@ -166,10 +166,11 @@ CommandParameter="{Binding Source={x:Reference ReportEntry}, Path=Text}" />
                     </CollectionView>
                 </toolkit:Expander>
 
+
                 <!-- Expander for Reports (Visible only to Admin) -->
                 <toolkit:Expander IsVisible="{Binding IsAdmin}" Grid.Column="1" Grid.Row="1">
                     <toolkit:Expander.Header>
-                        <Button Text="View Waitlisted" BackgroundColor="#FF5722" TextColor="White"/>
+                        <Button Text="View Reports" BackgroundColor="#FF5722" TextColor="White"/>
                     </toolkit:Expander.Header>
                     <CollectionView ItemsSource="{Binding Reports}">
                         <CollectionView.ItemTemplate>
@@ -178,7 +179,6 @@ CommandParameter="{Binding Source={x:Reference ReportEntry}, Path=Text}" />
                                     <HorizontalStackLayout Grid.Row="0">
                                         <Image Source="{Binding Reporter.PictureUrl}" HeightRequest="40" WidthRequest="40" Aspect="AspectFill"/>
                                         <Label Text="{Binding Reporter.Username}" FontSize="16"/>
-                                        <!-- Checkbox Visible Only for Creator -->
                                     </HorizontalStackLayout>
                                     <HorizontalStackLayout Grid.Row="1">
                                         <Label Text="{Binding Reporter.FirstName}" FontSize="16"/>
