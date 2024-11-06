@@ -33,8 +33,6 @@ namespace SportApp.ViewModels
                     return;
                 }
                 await Application.Current.MainPage.DisplayAlert("logout", $"success", "ok");
-                var shellViewModel = (AppShellViewModel)App.Current.MainPage.BindingContext;
-                shellViewModel.IsLoggedIn = false;
             }
             catch (Exception ex)
             {

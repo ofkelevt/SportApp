@@ -12,14 +12,14 @@
         Route="FindEvent"
         Title="FindEvent"/>
         <ShellContent
-        Title="LoginView"
+        Title="Login"
         ContentTemplate="{DataTemplate Views:LoginView}"
         Route="LoginView" 
-                IsVisible="{Binding IsntLoggedIn}"/>
+        IsVisible="{Binding IsntLoggedIn}"/>
         <ShellContent
-            Title="CreateEvent"
-            ContentTemplate="{DataTemplate Views:CrateEvent}"
-            Route="CrateEvent"
+        Title="CreateEvent"
+        ContentTemplate="{DataTemplate Views:CrateEvent}"
+        Route="CrateEvent"
             IsVisible="{Binding IsLoggedIn}"/>
         <ShellContent
                 Title="Logout"
