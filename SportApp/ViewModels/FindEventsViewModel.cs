@@ -28,6 +28,7 @@ namespace SportApp.ViewModels
         public ICommand RefreshCommand { get; set; }
         public ICommand JoinCommand { get; }
         public ICommand fuck { get; }
+        public ICommand NavigateToUserDetailsCommand => new Command<Users>(async (u) => await NavigateToUserDetails(u));
 
         private string input1;
         public string Input1
@@ -177,6 +178,15 @@ namespace SportApp.ViewModels
             var shellViewModel = (AppShellViewModel)App.Current.MainPage.BindingContext;
             shellViewModel.IsAdmin = true;
             IsRefreshing = true;
+        }
+        private async Task NavigateToUserDetails(Users selectedUser)
+        {
+            if (selectedUser != null)
+            {
+                var viewModel = new UserDetailsViewModel(selectedUser);
+                var viewEventPage = new UserDetailsPage(viewModel);
+                await Shell.Current.Navigation.PushAsync(viewEventPage);
+            }
         }
     }
 }

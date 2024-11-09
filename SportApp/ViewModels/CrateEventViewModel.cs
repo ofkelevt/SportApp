@@ -81,5 +81,6 @@ namespace SportApp.ViewModels
             var findeventpage = App.Current.Handler.MauiContext.Services.GetService<FindEvent>();
             await Shell.Current.Navigation.PushAsync(findeventpage);
         }
+
     }
 }

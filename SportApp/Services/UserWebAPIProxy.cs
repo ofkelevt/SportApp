@@ -110,18 +110,10 @@ namespace SportApp.Services
                 string json = JsonSerializer.Serialize(user, jsonSerializerOptions);
                 StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PutAsync(url, content);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return true; // User successfully updated
-                }
-                else
-                {
-                    return false; // Handle failure case
-                }
+                return response.IsSuccessStatusCode;
             }
             catch (Exception ex)
-            {
+            { 
                 // Handle exceptions (logging, rethrowing, etc.)
                 Console.WriteLine($"An error occurred: {ex.Message}");
                 return false; // Return false on error

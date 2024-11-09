@@ -33,6 +33,8 @@ public static class MauiProgram
 		builder.Services.AddTransient<Logout>();
 		builder.Services.AddTransient<UserDetailsViewModel>();
 		builder.Services.AddTransient<UserDetailsPage>();
+        builder.Services.AddTransient<AdminViewModel>();
+        builder.Services.AddTransient<AdminPage>();
 #if DEBUG
         builder.Logging.AddDebug();
 #endif

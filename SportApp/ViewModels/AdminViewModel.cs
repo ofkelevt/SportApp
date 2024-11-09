@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using SportApp.Models;
 using SportApp.Services;
+using SportApp.Views;
 
 namespace SportApp.ViewModels
 {
@@ -21,7 +22,7 @@ namespace SportApp.ViewModels
 
         public ObservableCollection<Users> Users { get; set; }
         public ICommand RefreshCommand { get; }
-
+        public ICommand NavigateToUserDetailsCommand => new Command<Users>(async (u) => await NavigateToUserDetails(u));
         public AdminViewModel()
         {
             _proxyUser = new UserWebAPIProxy();
@@ -39,7 +40,7 @@ namespace SportApp.ViewModels
             try
             {
                 await _proxyLoginDemo.CheckAsync();
-                if(_proxyLoginDemo.LoggedInUser?.UserId != 2)
+                if(_proxyLoginDemo.LoggedInUser?.Urank != 2)
                 {
                     await Application.Current.MainPage.DisplayAlert("admin page", $"you are not an edmin you can't enter", "ok");
                     await Shell.Current.GoToAsync("//FindEvent");
@@ -58,7 +59,9 @@ namespace SportApp.ViewModels
                         sum += c.Rating;
                         i++;
                     }
-                    user.Rating = sum/i;
+                    if (i != 0)
+                        user.Rating = sum / i;
+                    else user.Rating = -1;
                     Users.Add(user);
                     
                 }
@@ -70,6 +73,15 @@ namespace SportApp.ViewModels
             finally
             {
                 IsRefreshing = false;
+            }
+        }
+        private async Task NavigateToUserDetails(Users selectedUser)
+        {
+            if (selectedUser != null)
+            {
+                var viewModel = new UserDetailsViewModel(selectedUser);
+                var viewEventPage = new UserDetailsPage(viewModel);
+                await Shell.Current.Navigation.PushAsync(viewEventPage);
             }
         }
     }

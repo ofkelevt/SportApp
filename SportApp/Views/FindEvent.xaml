@@ -23,7 +23,6 @@
 
         <!-- Filter Section -->
         <StackLayout Grid.Row="1" Orientation="Horizontal" Padding="10" Spacing="8">
-            <Button Command="{Binding fuck}"/>
             <Entry Placeholder="Event Name filter" 
                    Text="{Binding Input1}" 
                    HorizontalOptions="FillAndExpand" />
@@ -58,16 +57,22 @@
                                             <Label Text="{Binding Crator.Username}" 
                                                    FontSize="Medium" 
                                                    FontAttributes="Bold" 
-                                                   VerticalOptions="Center" />
+                                                   VerticalOptions="Center" >
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:FindEventsViewModel}}, Path=NavigateToUserDetailsCommand}" CommandParameter="{Binding Crator}" />
+                                                </Label.GestureRecognizers>
+                                            </Label>
                                         </StackLayout>
 
                                         <!-- Event Details -->
                                         <Label Text="{Binding EventName}" 
                                                FontSize="Medium" 
                                                FontAttributes="Bold" 
-                                               TextColor="Black" />
+                                               TextColor="Black" >
 
-                                        <Label Text="{Binding Sport}" 
+                                            </Label>
+
+                                            <Label Text="{Binding Sport}" 
                                                FontSize="Small" 
                                                TextColor="Gray" />
 

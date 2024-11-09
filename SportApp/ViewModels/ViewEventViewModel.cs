@@ -70,6 +70,7 @@ namespace SportApp.ViewModels
         public ICommand CommentCommand { get; }
         public ICommand DelteCommantCommand { get; }
         public ICommand LeaveCommand { get; }
+        public ICommand NavigateToUserDetailsCommand => new Command<Users>(async (u) => await NavigateToUserDetails(u));
 
         private bool isCreator;
         public bool IsCreator { get { return isCreator; } set {isCreator = value; OnPropertyChanged(nameof(IsCreator)); } }
@@ -323,6 +324,15 @@ namespace SportApp.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Delete Comment", $"error: {ex}", "ok");
             }
 
+        }
+        private async Task NavigateToUserDetails(Users selectedUser)
+        {
+            if (selectedUser != null)
+            {
+                var viewModel = new UserDetailsViewModel(selectedUser);
+                var viewEventPage = new UserDetailsPage(viewModel);
+                await Shell.Current.Navigation.PushAsync(viewEventPage);
+            }
         }
     }
 }

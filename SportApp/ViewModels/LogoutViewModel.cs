@@ -40,6 +40,7 @@ namespace SportApp.ViewModels
             }
             finally
             {
+                App.Current.MainPage = new AppShell();
                 await Shell.Current.GoToAsync("//FindEvent");
 
             }

@@ -102,6 +102,8 @@ namespace SportApp.ViewModels
                 shellViewModel.IsLoggedIn = true;
                 if(u.Urank == 2)
                     shellViewModel.IsAdmin = true;
+                UserName = "";
+                Password = "";
                 await Shell.Current.GoToAsync("//FindEvent");
             }
         }

@@ -6,204 +6,247 @@
              x:DataType="viewModels:UserDetailsViewModel"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
     <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
-        <VerticalStackLayout Padding="10" Spacing="20">
-            <!-- User Details Grid -->
-            <Frame CornerRadius="10" BackgroundColor="#f1f1f1" Padding="10">
-                <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
+        <ScrollView>
+            <VerticalStackLayout Padding="10" Spacing="20">
+                <!-- User Details Grid -->
+                <Frame CornerRadius="10" BackgroundColor="#f1f1f1" Padding="10">
+                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
 
-                    <!-- First Name -->
-                    <Label Text="First Name:" FontAttributes="Bold" Grid.Row="0" Grid.Column="0"/>
-                    <Label Text="{Binding User.FirstName}" Grid.Row="0" Grid.Column="1">
-                        <Label.Triggers>
-                            <DataTrigger TargetType="Label" Binding="{Binding IsLoggedUser}" Value="True">
-                                <Setter Property="IsVisible" Value="False"/>
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-                    <Entry Text="{Binding User.FirstName}" Grid.Row="0" Grid.Column="1">
-                        <Entry.Triggers>
-                            <DataTrigger TargetType="Entry" Binding="{Binding IsLoggedUser}" Value="False">
-                                <Setter Property="IsVisible" Value="False"/>
-                            </DataTrigger>
-                        </Entry.Triggers>
-                    </Entry>
+                        <!-- First Name -->
+                        <Label Text="First Name:" FontAttributes="Bold" Grid.Row="0" Grid.Column="0"/>
+                        <Label Text="{Binding User.FirstName}" Grid.Row="0" Grid.Column="1">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsLoggedUser}" Value="True">
+                                    <Setter Property="IsVisible" Value="False"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Entry Text="{Binding User.FirstName}" Grid.Row="0" Grid.Column="1">
+                            <Entry.Triggers>
+                                <DataTrigger TargetType="Entry" Binding="{Binding IsLoggedUser}" Value="False">
+                                    <Setter Property="IsVisible" Value="False"/>
+                                </DataTrigger>
+                            </Entry.Triggers>
+                        </Entry>
 
-                    <!-- Last Name -->
-                    <Label Text="Last Name:" FontAttributes="Bold" Grid.Row="1" Grid.Column="0"/>
-                    <Label Text="{Binding User.LastName}" Grid.Row="1" Grid.Column="1">
-                        <Label.Triggers>
-                            <DataTrigger TargetType="Label" Binding="{Binding IsLoggedUser}" Value="True">
-                                <Setter Property="IsVisible" Value="False"/>
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-                    <Entry Text="{Binding User.LastName}" Grid.Row="1" Grid.Column="1">
-                        <Entry.Triggers>
-                            <DataTrigger TargetType="Entry" Binding="{Binding IsLoggedUser}" Value="False">
-                                <Setter Property="IsVisible" Value="False"/>
-                            </DataTrigger>
-                        </Entry.Triggers>
-                    </Entry>
+                        <!-- Last Name -->
+                        <Label Text="Last Name:" FontAttributes="Bold" Grid.Row="1" Grid.Column="0"/>
+                        <Label Text="{Binding User.LastName}" Grid.Row="1" Grid.Column="1">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsLoggedUser}" Value="True">
+                                    <Setter Property="IsVisible" Value="False"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Entry Text="{Binding User.LastName}" Grid.Row="1" Grid.Column="1">
+                            <Entry.Triggers>
+                                <DataTrigger TargetType="Entry" Binding="{Binding IsLoggedUser}" Value="False">
+                                    <Setter Property="IsVisible" Value="False"/>
+                                </DataTrigger>
+                            </Entry.Triggers>
+                        </Entry>
 
-                    <!-- Phone Number -->
-                    <Label Text="Phone:" FontAttributes="Bold" Grid.Row="2" Grid.Column="0"/>
-                    <Label Text="{Binding User.PhoneNum}" Grid.Row="2" Grid.Column="1">
-                        <Label.Triggers>
-                            <DataTrigger TargetType="Label" Binding="{Binding IsLoggedUser}" Value="True">
-                                <Setter Property="IsVisible" Value="False"/>
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-                    <Entry Text="{Binding User.PhoneNum}" Grid.Row="2" Grid.Column="1">
-                        <Entry.Triggers>
-                            <DataTrigger TargetType="Entry" Binding="{Binding IsLoggedUser}" Value="False">
-                                <Setter Property="IsVisible" Value="False"/>
-                            </DataTrigger>
-                        </Entry.Triggers>
-                    </Entry>
+                        <!-- Phone Number -->
+                        <Label Text="Phone:" FontAttributes="Bold" Grid.Row="2" Grid.Column="0"/>
+                        <Label Text="{Binding User.PhoneNum}" Grid.Row="2" Grid.Column="1">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsLoggedUser}" Value="True">
+                                    <Setter Property="IsVisible" Value="False"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Entry Text="{Binding User.PhoneNum}" Grid.Row="2" Grid.Column="1">
+                            <Entry.Triggers>
+                                <DataTrigger TargetType="Entry" Binding="{Binding IsLoggedUser}" Value="False">
+                                    <Setter Property="IsVisible" Value="False"/>
+                                </DataTrigger>
+                            </Entry.Triggers>
+                        </Entry>
 
-                    <!-- City -->
-                    <Label Text="City:" FontAttributes="Bold" Grid.Row="3" Grid.Column="0"/>
-                    <Label Text="{Binding User.CityName}" Grid.Row="3" Grid.Column="1">
-                        <Label.Triggers>
-                            <DataTrigger TargetType="Label" Binding="{Binding IsLoggedUser}" Value="True">
-                                <Setter Property="IsVisible" Value="False"/>
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-                    <Entry Text="{Binding User.CityName}" Grid.Row="3" Grid.Column="1">
-                        <Entry.Triggers>
-                            <DataTrigger TargetType="Entry" Binding="{Binding IsLoggedUser}" Value="False">
-                                <Setter Property="IsVisible" Value="False"/>
-                            </DataTrigger>
-                        </Entry.Triggers>
-                    </Entry>
+                        <!-- City -->
+                        <Label Text="City:" FontAttributes="Bold" Grid.Row="3" Grid.Column="0"/>
+                        <Label Text="{Binding User.CityName}" Grid.Row="3" Grid.Column="1">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsLoggedUser}" Value="True">
+                                    <Setter Property="IsVisible" Value="False"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Entry Text="{Binding User.CityName}" Grid.Row="3" Grid.Column="1">
+                            <Entry.Triggers>
+                                <DataTrigger TargetType="Entry" Binding="{Binding IsLoggedUser}" Value="False">
+                                    <Setter Property="IsVisible" Value="False"/>
+                                </DataTrigger>
+                            </Entry.Triggers>
+                        </Entry>
 
-                    <!-- Description -->
-                    <Label Text="Description:" FontAttributes="Bold" Grid.Row="4" Grid.Column="0"/>
-                    <Label Text="{Binding User.Description}" Grid.Row="4" Grid.Column="1">
-                        <Label.Triggers>
-                            <DataTrigger TargetType="Label" Binding="{Binding IsLoggedUser}" Value="True">
-                                <Setter Property="IsVisible" Value="False"/>
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-                    <Editor Text="{Binding User.Description}" Grid.Row="4" Grid.Column="1" AutoSize="TextChanges">
-                        <Editor.Triggers>
-                            <DataTrigger TargetType="Editor" Binding="{Binding IsLoggedUser}" Value="False">
-                                <Setter Property="IsVisible" Value="False"/>
-                            </DataTrigger>
-                        </Editor.Triggers>
-                    </Editor>
+                        <!-- Description -->
+                        <Label Text="Description:" FontAttributes="Bold" Grid.Row="4" Grid.Column="0"/>
+                        <Label Text="{Binding User.Description}" Grid.Row="4" Grid.Column="1">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsLoggedUser}" Value="True">
+                                    <Setter Property="IsVisible" Value="False"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Editor Text="{Binding User.Description}" Grid.Row="4" Grid.Column="1" AutoSize="TextChanges">
+                            <Editor.Triggers>
+                                <DataTrigger TargetType="Editor" Binding="{Binding IsLoggedUser}" Value="False">
+                                    <Setter Property="IsVisible" Value="False"/>
+                                </DataTrigger>
+                            </Editor.Triggers>
+                        </Editor>
+                    </Grid>
+                </Frame>
+                <Button BackgroundColor="green" TextColor="white" Command="{Binding OnSave}" Text="save changes">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding IsLoggedUser}" Value="False">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,*">
+                    <!-- Comment Section -->
+                    <StackLayout IsVisible="{Binding IsLoggedIn}" Spacing="10" Grid.Column="0">
+                        <Label Text="Leave a Comment:" FontAttributes="Bold" FontSize="14" TextColor="Gray"/>
+                        <Entry Placeholder="Write your comment..." x:Name="CommentEntry" 
+               BackgroundColor="LightGray" TextColor="Black"/>
+
+                        <Label Text="Rating:" FontAttributes="Bold" FontSize="14" TextColor="Gray"/>
+
+                        <!-- Star Rating -->
+                        <StackLayout Orientation="Horizontal">
+                            <Image Source="{Binding Star1Image}" WidthRequest="30" HeightRequest="30">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="1"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                            <Image Source="{Binding Star2Image}" WidthRequest="30" HeightRequest="30">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="2"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                            <Image Source="{Binding Star3Image}" WidthRequest="30" HeightRequest="30">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="3"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                            <Image Source="{Binding Star4Image}" WidthRequest="30" HeightRequest="30">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="4"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                            <Image Source="{Binding Star5Image}" WidthRequest="30" HeightRequest="30">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="5"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </StackLayout>
+
+                        <Button Text="Comment" Command="{Binding CommentCommand}" 
+                CommandParameter="{Binding Source={x:Reference CommentEntry}, Path=Text}"
+                BackgroundColor="MediumPurple" TextColor="White"/>
+                    </StackLayout>
+
+                    <!-- Report Section -->
+                    <StackLayout IsVisible="{Binding IsLoggedIn}" Spacing="10" Grid.Column="1">
+                        <Label Text="Report User:" FontAttributes="Bold" FontSize="14" TextColor="Gray"/>
+                        <Entry Placeholder="Write your report..." x:Name="ReportEntry" 
+               BackgroundColor="LightGray" TextColor="Black" WidthRequest="300"/>
+
+                        <Button Text="Report" Command="{Binding ReportCommand}" 
+                CommandParameter="{Binding Source={x:Reference ReportEntry}, Path=Text}"
+                BackgroundColor="MediumPurple" TextColor="White" WidthRequest="300"/>
+                    </StackLayout>
+
+
+                    <!--Expander for Comments--> 
+                    <toolkit:Expander  Grid.Row="1">
+                        <toolkit:Expander.Header>
+                            <Button Text="View Comments" BackgroundColor="blue" TextColor="White"/>
+                        </toolkit:Expander.Header>
+                        <CollectionView ItemsSource="{Binding Comments}"  Grid.Row="1">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="Models:Comment">
+                                    <Grid RowDefinitions="Auto,Auto,Auto">
+                                        <HorizontalStackLayout Grid.Row="0">
+                                            <Image Source="{Binding Commenter.PictureUrl, FallbackValue='defaultImage.png'}" 
+                                   HeightRequest="40" WidthRequest="40" Aspect="AspectFill"/>
+                                            <Label Text="{Binding Commenter.Username, FallbackValue='Anonymous'}" FontSize="16">
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:UserDetailsViewModel}}, Path=NavigateToUserDetailsCommand}" CommandParameter="{Binding Commenter}" />
+                                                </Label.GestureRecognizers>
+                                            </Label>
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout Grid.Row="1">
+                                            <Label Text="{Binding Commenter.FirstName, FallbackValue='First Name'}" FontSize="16"/>
+                                            <Label Text="{Binding Commenter.LastName, FallbackValue='Last Name'}" FontSize="16"/>
+                                        </HorizontalStackLayout>
+                                        <Frame CornerRadius="15" HasShadow="True" Grid.Row="2">
+                                            <StackLayout>
+                                                <Label Text="{Binding CommentText}" />
+                                                <Label Text="{Binding CreatedAt, StringFormat='Reported on: {0:MMM dd, yyyy HH:mm}', FallbackValue='Date not available'}" />
+                                            </StackLayout>
+                                        </Frame>
+                                        <Button Text="Delete" TextColor="White" BackgroundColor="Red" 
+                                Grid.Row="2" HorizontalOptions="End" WidthRequest="80"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:UserDetailsViewModel}}, Path=DeleteCommentCommand}" 
+                                CommandParameter="{Binding .}">
+                                            <Button.Triggers>
+                                                <DataTrigger TargetType="Button" Binding="{Binding IsCommenter}" Value="false">
+                                                    <Setter Property="IsVisible" Value="False"/>
+                                                </DataTrigger>
+                                            </Button.Triggers>
+                                        </Button>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </toolkit:Expander>
+
+
+                    <!-- Expander for Reports (Visible only to Admin) -->
+                    <toolkit:Expander IsVisible="{Binding IsAdmin}" Grid.Column="1" Grid.Row="1">
+                        <toolkit:Expander.Header>
+                            <Button Text="View Reports" BackgroundColor="#FF5722" TextColor="White"/>
+                        </toolkit:Expander.Header>
+                        <CollectionView ItemsSource="{Binding Reports}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate  x:DataType="Models:Report">
+                                    <Grid RowDefinitions="Auto,Auto,Auto">
+                                        <HorizontalStackLayout Grid.Row="0">
+                                            <Image Source="{Binding Reporter.PictureUrl}" HeightRequest="40" WidthRequest="40" Aspect="AspectFill"/>
+                                            <Label Text="{Binding Reporter.Username}" FontSize="16">
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:UserDetailsViewModel}}, Path=NavigateToUserDetailsCommand}" CommandParameter="{Binding Reporter}" />
+                                                </Label.GestureRecognizers>
+                                            </Label>
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout Grid.Row="1">
+                                            <Label Text="{Binding Reporter.FirstName}" FontSize="16"/>
+                                            <Label Text="{Binding Reporter.LastName}" FontSize="16"/>
+                                        </HorizontalStackLayout>
+                                        <Frame CornerRadius="15" HasShadow="True" Grid.Row="2">
+                                            <StackLayout>
+                                                <Label Text="{Binding CommentText}" />
+                                                <Label Text="{Binding CreatedAt, StringFormat='Reported on: {0:MMM dd, yyyy HH:mm}'}" />
+                                            </StackLayout>
+                                        </Frame>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </toolkit:Expander>
                 </Grid>
-            </Frame>
-            <Button BackgroundColor="green" TextColor="white" Command="{Binding OnSave}" Text="save changes">
-                <Button.Triggers>
-                    <DataTrigger TargetType="Button" Binding="{Binding IsLoggedUser}" Value="False">
-                        <Setter Property="IsVisible" Value="False" />
-                    </DataTrigger>
-                </Button.Triggers>
-            </Button>
-            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,*">
-                <!-- Comment Section -->
-                <StackLayout IsVisible="{Binding IsLoggedIn}" Spacing="10" Grid.Column="0">
-                    <Label Text="Leave a Comment:" FontAttributes="Bold"/>
-                    <Entry Placeholder="Write your comment..." x:Name="CommentEntry" />
+                <Button Background="red" Text="ban" TextColor="white" Command="{Binding BanCommand}">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding IsAdmin}" Value="False">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
 
-                    <Label Text="Rating:" FontAttributes="Bold"/>
-                    <Slider Minimum="1" Maximum="5" Value="{Binding Rating}" />
-
-                    <Button Text="Comment" Command="{Binding CommentCommand}" 
-CommandParameter="{Binding Source={x:Reference CommentEntry}, Path=Text}" />
-                </StackLayout>
-
-                <!-- Report Section -->
-                <StackLayout IsVisible="{Binding IsLoggedIn}" Spacing="10" Grid.Column="1">
-                    <Label Text="Report User:" FontAttributes="Bold"/>
-                    <Entry Placeholder="Write your report..." x:Name="ReportEntry" />
-
-                    <Button Text="Report" Command="{Binding ReportCommand}" 
-CommandParameter="{Binding Source={x:Reference ReportEntry}, Path=Text}" />
-                </StackLayout>
-
-                 <!--Expander for Comments--> 
-                <toolkit:Expander  Grid.Row="1">
-                    <toolkit:Expander.Header>
-                        <Button Text="View Comments" BackgroundColor="blue" TextColor="White"/>
-                    </toolkit:Expander.Header>
-                    <CollectionView ItemsSource="{Binding Comments}"  Grid.Row="1">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="Models:Comment">
-                                <Grid RowDefinitions="Auto,Auto,Auto">
-                                    <HorizontalStackLayout Grid.Row="0">
-                                        <Image Source="{Binding Commenter.PictureUrl, FallbackValue='defaultImage.png'}" 
-                               HeightRequest="40" WidthRequest="40" Aspect="AspectFill"/>
-                                        <Label Text="{Binding Commenter.Username, FallbackValue='Anonymous'}" FontSize="16"/>
-                                    </HorizontalStackLayout>
-                                    <HorizontalStackLayout Grid.Row="1">
-                                        <Label Text="{Binding Commenter.FirstName, FallbackValue='First Name'}" FontSize="16"/>
-                                        <Label Text="{Binding Commenter.LastName, FallbackValue='Last Name'}" FontSize="16"/>
-                                    </HorizontalStackLayout>
-                                    <Frame CornerRadius="15" HasShadow="True" Grid.Row="2">
-                                        <StackLayout>
-                                            <Label Text="{Binding CommentText}" />
-                                            <Label Text="{Binding CreatedAt, StringFormat='Reported on: {0:MMM dd, yyyy HH:mm}', FallbackValue='Date not available'}" />
-                                        </StackLayout>
-                                    </Frame>
-                                    <Button Text="Delete" TextColor="White" BackgroundColor="Red" 
-                            Grid.Row="2" HorizontalOptions="End" WidthRequest="80"
-                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:UserDetailsViewModel}}, Path=DeleteCommentCommand}" 
-                            CommandParameter="{Binding .}">
-                                        <Button.Triggers>
-                                            <DataTrigger TargetType="Button" Binding="{Binding IsCommenter}" Value="false">
-                                                <Setter Property="IsVisible" Value="False"/>
-                                            </DataTrigger>
-                                        </Button.Triggers>
-                                    </Button>
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </toolkit:Expander>
-
-
-                <!-- Expander for Reports (Visible only to Admin) -->
-                <toolkit:Expander IsVisible="{Binding IsAdmin}" Grid.Column="1" Grid.Row="1">
-                    <toolkit:Expander.Header>
-                        <Button Text="View Reports" BackgroundColor="#FF5722" TextColor="White"/>
-                    </toolkit:Expander.Header>
-                    <CollectionView ItemsSource="{Binding Reports}">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate  x:DataType="Models:Report">
-                                <Grid RowDefinitions="Auto,Auto,Auto">
-                                    <HorizontalStackLayout Grid.Row="0">
-                                        <Image Source="{Binding Reporter.PictureUrl}" HeightRequest="40" WidthRequest="40" Aspect="AspectFill"/>
-                                        <Label Text="{Binding Reporter.Username}" FontSize="16"/>
-                                    </HorizontalStackLayout>
-                                    <HorizontalStackLayout Grid.Row="1">
-                                        <Label Text="{Binding Reporter.FirstName}" FontSize="16"/>
-                                        <Label Text="{Binding Reporter.LastName}" FontSize="16"/>
-                                    </HorizontalStackLayout>
-                                    <Frame CornerRadius="15" HasShadow="True" Grid.Row="2">
-                                        <StackLayout>
-                                            <Label Text="{Binding CommentText}" />
-                                            <Label Text="{Binding CreatedAt, StringFormat='Reported on: {0:MMM dd, yyyy HH:mm}'}" />
-                                        </StackLayout>
-                                    </Frame>
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </toolkit:Expander>
-            </Grid>
-            <Button Background="red" Text="ban" TextColor="white" Command="{Binding BanCommand}">
-                <Button.Triggers>
-                    <DataTrigger TargetType="Button" Binding="{Binding IsAdmin}" Value="False">
-                        <Setter Property="IsVisible" Value="False" />
-                    </DataTrigger>
-                </Button.Triggers>
-            </Button>
-
-        </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
     </RefreshView>
 </ContentPage>

@@ -1,8 +1,11 @@
 ﻿using SportApp.Models;
 using SportApp.Services;
+using SportApp.Views;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System.Windows.Input;
 namespace SportApp.ViewModels
 {
     public class UserDetailsViewModel : ViewModel
@@ -45,7 +48,12 @@ namespace SportApp.ViewModels
         private bool isRefreshing;
         public bool IsRefreshing { get { return isRefreshing; } set { isRefreshing = value; OnPropertyChanged(nameof(IsRefreshing)); } }
         private int rating;
-        public int Rating { get { return rating; } set { rating = value; OnPropertyChanged(nameof(Rating)); } }
+        public int Rating { get { return rating; } set { rating = value; OnPropertyChanged(nameof(Rating)); UpdateStarImages(); } }
+        public string Star1Image => rating >= 1 ? "filled_star.png" : "empty_star.png";
+        public string Star2Image => rating >= 2 ? "filled_star.png" : "empty_star.png";
+        public string Star3Image => rating >= 3 ? "filled_star.png" : "empty_star.png";
+        public string Star4Image => rating >= 4 ? "filled_star.png" : "empty_star.png";
+        public string Star5Image => rating >= 5 ? "filled_star.png" : "empty_star.png";
         private bool isAdmin;
         public bool IsAdmin { 
             get { return isAdmin; } 
@@ -59,6 +67,8 @@ namespace SportApp.ViewModels
         public Command BanCommand { get; }
         public Command DelteCommentCommand { get; }
         public Command OnSave { get; }
+        public ICommand SetRatingCommand => new Command<int>((u)=> Rating = u);
+        public ICommand NavigateToUserDetailsCommand => new Command<Users>(async (u) => await NavigateToUserDetails(u));
 
         public UserDetailsViewModel(Users user = null)
         {
@@ -94,10 +104,21 @@ namespace SportApp.ViewModels
                 {
                     User = proxyLogin.LoggedInUser;
                     IsLoggedUser = true;
+                    IsLoggedIn = true;
                 }
                 else
                 {
-                    IsLoggedUser = proxyLogin.LoggedInUser.UserId == User.UserId;
+                    if(proxyLogin.LoggedInUser != null)
+                    {
+                        IsLoggedUser = proxyLogin.LoggedInUser.UserId == User.UserId;
+                        IsLoggedIn = true;
+                    }
+                    else
+                    {
+                        IsLoggedIn = false;
+                        IsLoggedUser = false;
+                    }
+
                 }
                 IsAdmin = false;
                 if (proxyLogin.LoggedInUser.Urank == 2)
@@ -286,12 +307,31 @@ namespace SportApp.ViewModels
                 {
                     await Application.Current.MainPage.DisplayAlert("Save changes", $"error while saving changes", "ok");
                 }
-            }catch(Exception ex)
+                await Application.Current.MainPage.DisplayAlert("Save changes", $"seccuss", "ok");
+            }
+            catch(Exception ex)
             {
                 await Application.Current.MainPage.DisplayAlert("Save chnages", $"error while saving changes :{ex}", "ok");
             }
             finally { IsRefreshing = true; }
 
+        }
+        private void UpdateStarImages()
+        {
+            OnPropertyChanged(nameof(Star1Image));
+            OnPropertyChanged(nameof(Star2Image));
+            OnPropertyChanged(nameof(Star3Image));
+            OnPropertyChanged(nameof(Star4Image));
+            OnPropertyChanged(nameof(Star5Image));
+        }
+        private async Task NavigateToUserDetails(Users selectedUser)
+        {
+            if (selectedUser != null)
+            {
+                var viewModel = new UserDetailsViewModel(selectedUser);
+                var viewEventPage = new UserDetailsPage(viewModel);
+                await Shell.Current.Navigation.PushAsync(viewEventPage);
+            }
         }
     }
 }
