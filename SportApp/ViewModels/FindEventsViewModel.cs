@@ -118,7 +118,7 @@ namespace SportApp.ViewModels
             await ExecuteRefresh();
             Input1 = input;
             var filteredList = Events
-            .Where(e => Fuzz.Ratio(input, e.EventName) > 50) // Filter based on similarity to 'Event' property
+            .Where(e => Fuzz.Ratio(input, e.EventName) > 200) // Filter based on similarity to 'Event' property
             .OrderByDescending(e => Fuzz.Ratio(input, e.EventName)) // Sort by similarity
             .ToList();
             EventsRestart(filteredList);

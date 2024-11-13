@@ -57,6 +57,7 @@
                                             <Label Text="{Binding Crator.Username}" 
                                                    FontSize="Medium" 
                                                    FontAttributes="Bold" 
+                                                   TextColor="Blue"
                                                    VerticalOptions="Center" >
                                                 <Label.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:FindEventsViewModel}}, Path=NavigateToUserDetailsCommand}" CommandParameter="{Binding Crator}" />

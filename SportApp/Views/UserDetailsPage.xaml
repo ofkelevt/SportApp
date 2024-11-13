@@ -8,6 +8,7 @@
     <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
         <ScrollView>
             <VerticalStackLayout Padding="10" Spacing="20">
+                <Label Text="{Binding User.Username}" FontSize="Header" HorizontalOptions="Center" FontAttributes="Bold"/>
                 <!-- User Details Grid -->
                 <Frame CornerRadius="10" BackgroundColor="#f1f1f1" Padding="10">
                     <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
@@ -112,36 +113,7 @@
                         <Entry Placeholder="Write your comment..." x:Name="CommentEntry" 
                BackgroundColor="LightGray" TextColor="Black"/>
 
-                        <Label Text="Rating:" FontAttributes="Bold" FontSize="14" TextColor="Gray"/>
-
-                        <!-- Star Rating -->
-                        <StackLayout Orientation="Horizontal">
-                            <Image Source="{Binding Star1Image}" WidthRequest="30" HeightRequest="30">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="1"/>
-                                </Image.GestureRecognizers>
-                            </Image>
-                            <Image Source="{Binding Star2Image}" WidthRequest="30" HeightRequest="30">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="2"/>
-                                </Image.GestureRecognizers>
-                            </Image>
-                            <Image Source="{Binding Star3Image}" WidthRequest="30" HeightRequest="30">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="3"/>
-                                </Image.GestureRecognizers>
-                            </Image>
-                            <Image Source="{Binding Star4Image}" WidthRequest="30" HeightRequest="30">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="4"/>
-                                </Image.GestureRecognizers>
-                            </Image>
-                            <Image Source="{Binding Star5Image}" WidthRequest="30" HeightRequest="30">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="5"/>
-                                </Image.GestureRecognizers>
-                            </Image>
-                        </StackLayout>
+                        <Entry Text="{Binding Rating}" FontAttributes="Bold" FontSize="14" TextColor="Gray" Placeholder="rating "/>
 
                         <Button Text="Comment" Command="{Binding CommentCommand}" 
                 CommandParameter="{Binding Source={x:Reference CommentEntry}, Path=Text}"
@@ -172,7 +144,7 @@
                                         <HorizontalStackLayout Grid.Row="0">
                                             <Image Source="{Binding Commenter.PictureUrl, FallbackValue='defaultImage.png'}" 
                                    HeightRequest="40" WidthRequest="40" Aspect="AspectFill"/>
-                                            <Label Text="{Binding Commenter.Username, FallbackValue='Anonymous'}" FontSize="16">
+                                            <Label Text="{Binding Commenter.Username, FallbackValue='Anonymous'}" FontAttributes="Bold" FontSize="18" TextColor="Blue">
                                                 <Label.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:UserDetailsViewModel}}, Path=NavigateToUserDetailsCommand}" CommandParameter="{Binding Commenter}" />
                                                 </Label.GestureRecognizers>
@@ -216,7 +188,7 @@
                                     <Grid RowDefinitions="Auto,Auto,Auto">
                                         <HorizontalStackLayout Grid.Row="0">
                                             <Image Source="{Binding Reporter.PictureUrl}" HeightRequest="40" WidthRequest="40" Aspect="AspectFill"/>
-                                            <Label Text="{Binding Reporter.Username}" FontSize="16">
+                                            <Label Text="{Binding Reporter.Username}" FontAttributes="Bold" FontSize="18" TextColor="Blue">
                                                 <Label.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:UserDetailsViewModel}}, Path=NavigateToUserDetailsCommand}" CommandParameter="{Binding Reporter}" />
                                                 </Label.GestureRecognizers>

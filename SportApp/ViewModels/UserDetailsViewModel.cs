@@ -121,7 +121,7 @@ namespace SportApp.ViewModels
 
                 }
                 IsAdmin = false;
-                if (proxyLogin.LoggedInUser.Urank == 2)
+                if (proxyLogin.LoggedInUser != null && proxyLogin.LoggedInUser.Urank == 2)
                 {
                     IsAdmin = true;
                 }
@@ -136,7 +136,7 @@ namespace SportApp.ViewModels
                 foreach (var comment in s)
                 {
                     comment.Commenter = users.First(u => u.UserId == comment.CommenterId);
-                    comment.IsCommenter = comment.CommenterId == proxyLogin.LoggedInUser.UserId || proxyLogin.LoggedInUser.Urank == 2;
+                    comment.IsCommenter =(proxyLogin.LoggedInUser != null) && (comment.CommenterId == proxyLogin.LoggedInUser.UserId || proxyLogin.LoggedInUser.Urank == 2);
                     Comments.Add(comment);
                     sum += comment.Rating;
                     i++;
@@ -181,6 +181,8 @@ namespace SportApp.ViewModels
                    $"error sending comment to server", "OK");
                     return;
                 }
+                await App.Current.MainPage.DisplayAlert("Comment seccuss",
+                   $"", "OK");
             }
             catch (Exception ex)
             {
@@ -215,6 +217,8 @@ namespace SportApp.ViewModels
                    $"error sending report to server", "OK");
                     return;
                 }
+                await App.Current.MainPage.DisplayAlert("Report seccuss",
+                   $"", "OK");
             }
             catch (Exception ex)
             {
