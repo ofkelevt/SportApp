@@ -8,6 +8,7 @@
     <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
         <ScrollView>
             <VerticalStackLayout Padding="10" Spacing="20">
+                <Label Text="{Binding User.Username}" FontSize="Header" HorizontalOptions="Center" FontAttributes="Bold"/>
                 <!-- User Details Grid -->
                 <Frame CornerRadius="10" BackgroundColor="#f1f1f1" Padding="10">
                     <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
@@ -112,36 +113,7 @@
                         <Entry Placeholder="Write your comment..." x:Name="CommentEntry" 
 BackgroundColor="LightGray" TextColor="Black" WidthRequest="300"/>
 
-                        <Label Text="Rating:" FontAttributes="Bold" FontSize="14" TextColor="Gray" WidthRequest="300"/>
-
-                        <!-- Star Rating -->
-                        <StackLayout Orientation="Horizontal" WidthRequest="300">
-                            <Image Source="{Binding Star1Image}" WidthRequest="45" HeightRequest="45">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="1"/>
-                                </Image.GestureRecognizers>
-                            </Image>
-                            <Image Source="{Binding Star2Image}" WidthRequest="45" HeightRequest="45">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="2"/>
-                                </Image.GestureRecognizers>
-                            </Image>
-                            <Image Source="{Binding Star3Image}" WidthRequest="45" HeightRequest="45">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="3"/>
-                                </Image.GestureRecognizers>
-                            </Image>
-                            <Image Source="{Binding Star4Image}" WidthRequest="45" HeightRequest="45">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="4"/>
-                                </Image.GestureRecognizers>
-                            </Image>
-                            <Image Source="{Binding Star5Image}" WidthRequest="45" HeightRequest="45">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="5"/>
-                                </Image.GestureRecognizers>
-                            </Image>
-                        </StackLayout>
+                        <Entry Text="{Binding Rating}" FontAttributes="Bold" FontSize="14" TextColor="Gray" Placeholder="rating "/>
 
                         <Button Text="Comment" Command="{Binding CommentCommand}" 
                 CommandParameter="{Binding Source={x:Reference CommentEntry}, Path=Text}"
