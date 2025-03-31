@@ -12,18 +12,17 @@ namespace SportApp.Services
 {
     public class LoginDemoWebAPIProxy
     {
-        private static readonly CookieContainer cookieContainer = new CookieContainer();
-        private static readonly HttpClient client = new HttpClient(new HttpClientHandler { CookieContainer = cookieContainer, UseCookies = true }, true);
+        private HttpClient client;
         private readonly JsonSerializerOptions jsonSerializerOptions;
         private readonly string baseUrl;
         public static string BaseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5274/api/" : "http://localhost:5274/api/";
 
         public Users LoggedInUser { get; set; }
 
-        public LoginDemoWebAPIProxy()
+        public LoginDemoWebAPIProxy(ClientHandler h)
         {
             //Set client handler to support cookies!!
-            var handler = new HttpClientHandler { CookieContainer = cookieContainer, UseCookies = true };
+            client = new HttpClient(h.handler, false);
             this.baseUrl = BaseAddress;
             JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions()
             {

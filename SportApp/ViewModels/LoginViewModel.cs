@@ -13,6 +13,7 @@ namespace SportApp.ViewModels
 {
     public class LoginViewModel:ViewModel
     {
+        private ClientHandler h;
         private LoginDemoWebAPIProxy service;
         private bool inServerCall;
         public bool InServerCall
@@ -63,12 +64,13 @@ namespace SportApp.ViewModels
                 return !this.InServerCall;
             }
         }
-        public LoginViewModel(LoginDemoWebAPIProxy service)
+        public LoginViewModel(LoginDemoWebAPIProxy service, ClientHandler h)
         {
             InServerCall = false;
             this.service = service;
             this.LoginCommand = new Command(OnLogin);
             this.SignUpCommand = new Command(async () => await OnSignUp());
+            this.h = h;
         }
 
         public ICommand LoginCommand { get; set; }
@@ -111,7 +113,7 @@ namespace SportApp.ViewModels
         public ICommand SignUpCommand { get; set; }
         private async Task OnSignUp()
         {
-            var viewModel = new SignUpViewModel();
+            var viewModel = new SignUpViewModel(h);
             var viewEventPage = new SignUpPage(viewModel);
             await Shell.Current.Navigation.PushAsync(viewEventPage);
         }

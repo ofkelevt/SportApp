@@ -9,6 +9,7 @@ namespace SportApp.ViewModels
 {
     public class AdminViewModel : ViewModel
     {
+        private ClientHandler h;
         private readonly UserWebAPIProxy _proxyUser;
         private readonly ReportWebApiProxy _proxyReport;
         private readonly CommentWebApiProxy _proxyComment;
@@ -23,12 +24,13 @@ namespace SportApp.ViewModels
         public ObservableCollection<Users> Users { get; set; }
         public ICommand RefreshCommand { get; }
         public ICommand NavigateToUserDetailsCommand => new Command<Users>(async (u) => await NavigateToUserDetails(u));
-        public AdminViewModel()
+        public AdminViewModel(ClientHandler h)
         {
-            _proxyUser = new UserWebAPIProxy();
-            _proxyReport = new ReportWebApiProxy();
-            _proxyComment = new CommentWebApiProxy();
-            _proxyLoginDemo = new LoginDemoWebAPIProxy();
+            this.h = h;
+            _proxyUser = new UserWebAPIProxy(h);
+            _proxyReport = new ReportWebApiProxy(h);
+            _proxyComment = new CommentWebApiProxy(h);
+            _proxyLoginDemo = new LoginDemoWebAPIProxy(h);
             Users = new ObservableCollection<Users>();
             RefreshCommand = new Command(async () => await RefreshUsersAsync());
             IsRefreshing = true; // Load data initially
@@ -42,7 +44,7 @@ namespace SportApp.ViewModels
                 await _proxyLoginDemo.CheckAsync();
                 if(_proxyLoginDemo.LoggedInUser?.Urank != 2)
                 {
-                    await Application.Current.MainPage.DisplayAlert("admin page", $"you are not an edmin you can't enter", "ok");
+                    await Application.Current.MainPage.DisplayAlert("admin page", $"you are not an admin you can't enter", "ok");
                     await Shell.Current.GoToAsync("//FindEvent");
                 }
                 var users = await _proxyUser.GetUsersAsync();
@@ -79,7 +81,7 @@ namespace SportApp.ViewModels
         {
             if (selectedUser != null)
             {
-                var viewModel = new UserDetailsViewModel(selectedUser);
+                var viewModel = new UserDetailsViewModel(h,selectedUser);
                 var viewEventPage = new UserDetailsPage(viewModel);
                 await Shell.Current.Navigation.PushAsync(viewEventPage);
             }

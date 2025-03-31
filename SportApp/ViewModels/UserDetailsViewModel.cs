@@ -10,6 +10,7 @@ namespace SportApp.ViewModels
 {
     public class UserDetailsViewModel : ViewModel
     {
+        private ClientHandler h;
         private UserWebAPIProxy proxyUser;
         private LoginDemoWebAPIProxy proxyLogin;
         private ReportWebApiProxy proxyReport;
@@ -70,16 +71,17 @@ namespace SportApp.ViewModels
         public ICommand SetRatingCommand => new Command<int>((u)=> Rating = u);
         public ICommand NavigateToUserDetailsCommand => new Command<Users>(async (u) => await NavigateToUserDetails(u));
 
-        public UserDetailsViewModel(Users user = null)
+        public UserDetailsViewModel(ClientHandler h,Users user = null)
         {
+            this.h = h;
             User = user;
-            proxyLogin = new LoginDemoWebAPIProxy();
-            proxyUser = new UserWebAPIProxy();
-            proxyComment = new CommentWebApiProxy();
-            proxyReport = new ReportWebApiProxy();
-            proxyEvent = new EventActionsWebAPIProxy();
-            proxyChatComment = new ChatCommentWebAPIProxy();
-            proxyEventToUser = new EventToUserWebApiProxy();
+            proxyLogin = new LoginDemoWebAPIProxy(h);
+            proxyUser = new UserWebAPIProxy(h);
+            proxyComment = new CommentWebApiProxy(h);
+            proxyReport = new ReportWebApiProxy(h);
+            proxyEvent = new EventActionsWebAPIProxy(h);
+            proxyChatComment = new ChatCommentWebAPIProxy(h);
+            proxyEventToUser = new EventToUserWebApiProxy(h);
             
             Comments = new ObservableCollection<Comment>();
             Reports = new ObservableCollection<Report>();
@@ -328,7 +330,7 @@ namespace SportApp.ViewModels
         {
             if (selectedUser != null)
             {
-                var viewModel = new UserDetailsViewModel(selectedUser);
+                var viewModel = new UserDetailsViewModel(h,selectedUser);
                 var viewEventPage = new UserDetailsPage(viewModel);
                 await Shell.Current.Navigation.PushAsync(viewEventPage);
             }

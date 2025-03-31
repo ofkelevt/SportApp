@@ -16,10 +16,10 @@ namespace SportApp.ViewModels
         public ICommand LogoutCommand { get; }
         private bool isRefreshing;
         public bool IsRefreshing { get { return isRefreshing; } set { isRefreshing = value; OnPropertyChanged(nameof(IsRefreshing)); } }
-        public LogoutViewModel() 
+        public LogoutViewModel(ClientHandler h) 
         {
             LogoutCommand = new Command(async () => await OnLogout());
-            _proxy = new LoginDemoWebAPIProxy();
+            _proxy = new LoginDemoWebAPIProxy(h);
             IsRefreshing = true;
         }
         private async Task OnLogout()

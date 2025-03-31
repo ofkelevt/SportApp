@@ -105,38 +105,38 @@
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
-                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,*">
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,*" ColumnSpacing="10" RowSpacing="10">
                     <!-- Comment Section -->
                     <StackLayout IsVisible="{Binding IsLoggedIn}" Spacing="10" Grid.Column="0">
-                        <Label Text="Leave a Comment:" FontAttributes="Bold" FontSize="14" TextColor="Gray"/>
+                        <Label Text="Leave a Comment:" FontAttributes="Bold" FontSize="14" TextColor="Gray" WidthRequest="300"/>
                         <Entry Placeholder="Write your comment..." x:Name="CommentEntry" 
-               BackgroundColor="LightGray" TextColor="Black"/>
+BackgroundColor="LightGray" TextColor="Black" WidthRequest="300"/>
 
-                        <Label Text="Rating:" FontAttributes="Bold" FontSize="14" TextColor="Gray"/>
+                        <Label Text="Rating:" FontAttributes="Bold" FontSize="14" TextColor="Gray" WidthRequest="300"/>
 
                         <!-- Star Rating -->
-                        <StackLayout Orientation="Horizontal">
-                            <Image Source="{Binding Star1Image}" WidthRequest="30" HeightRequest="30">
+                        <StackLayout Orientation="Horizontal" WidthRequest="300">
+                            <Image Source="{Binding Star1Image}" WidthRequest="45" HeightRequest="45">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="1"/>
                                 </Image.GestureRecognizers>
                             </Image>
-                            <Image Source="{Binding Star2Image}" WidthRequest="30" HeightRequest="30">
+                            <Image Source="{Binding Star2Image}" WidthRequest="45" HeightRequest="45">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="2"/>
                                 </Image.GestureRecognizers>
                             </Image>
-                            <Image Source="{Binding Star3Image}" WidthRequest="30" HeightRequest="30">
+                            <Image Source="{Binding Star3Image}" WidthRequest="45" HeightRequest="45">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="3"/>
                                 </Image.GestureRecognizers>
                             </Image>
-                            <Image Source="{Binding Star4Image}" WidthRequest="30" HeightRequest="30">
+                            <Image Source="{Binding Star4Image}" WidthRequest="45" HeightRequest="45">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="4"/>
                                 </Image.GestureRecognizers>
                             </Image>
-                            <Image Source="{Binding Star5Image}" WidthRequest="30" HeightRequest="30">
+                            <Image Source="{Binding Star5Image}" WidthRequest="45" HeightRequest="45">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding SetRatingCommand}" CommandParameter="5"/>
                                 </Image.GestureRecognizers>
@@ -145,23 +145,23 @@
 
                         <Button Text="Comment" Command="{Binding CommentCommand}" 
                 CommandParameter="{Binding Source={x:Reference CommentEntry}, Path=Text}"
-                BackgroundColor="MediumPurple" TextColor="White"/>
+                BackgroundColor="Orange" TextColor="White" WidthRequest="300"/>
                     </StackLayout>
 
                     <!-- Report Section -->
                     <StackLayout IsVisible="{Binding IsLoggedIn}" Spacing="10" Grid.Column="1">
-                        <Label Text="Report User:" FontAttributes="Bold" FontSize="14" TextColor="Gray"/>
+                        <Label Text="Report User:" FontAttributes="Bold" FontSize="14" TextColor="Gray" WidthRequest="300"/>
                         <Entry Placeholder="Write your report..." x:Name="ReportEntry" 
                BackgroundColor="LightGray" TextColor="Black" WidthRequest="300"/>
 
                         <Button Text="Report" Command="{Binding ReportCommand}" 
                 CommandParameter="{Binding Source={x:Reference ReportEntry}, Path=Text}"
-                BackgroundColor="MediumPurple" TextColor="White" WidthRequest="300"/>
+                BackgroundColor="Orange" TextColor="White" WidthRequest="300"/>
                     </StackLayout>
 
 
-                    <!--Expander for Comments--> 
-                    <toolkit:Expander  Grid.Row="1">
+                    <!--Expander for Comments-->
+                    <toolkit:Expander  Grid.Row="1" WidthRequest="300">
                         <toolkit:Expander.Header>
                             <Button Text="View Comments" BackgroundColor="blue" TextColor="White"/>
                         </toolkit:Expander.Header>
@@ -172,7 +172,7 @@
                                         <HorizontalStackLayout Grid.Row="0">
                                             <Image Source="{Binding Commenter.PictureUrl, FallbackValue='defaultImage.png'}" 
                                    HeightRequest="40" WidthRequest="40" Aspect="AspectFill"/>
-                                            <Label Text="{Binding Commenter.Username, FallbackValue='Anonymous'}" FontSize="16">
+                                            <Label Text="{Binding Commenter.Username, FallbackValue='Anonymous'}" FontAttributes="Bold" FontSize="18" TextColor="Blue">
                                                 <Label.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:UserDetailsViewModel}}, Path=NavigateToUserDetailsCommand}" CommandParameter="{Binding Commenter}" />
                                                 </Label.GestureRecognizers>
@@ -206,9 +206,9 @@
 
 
                     <!-- Expander for Reports (Visible only to Admin) -->
-                    <toolkit:Expander IsVisible="{Binding IsAdmin}" Grid.Column="1" Grid.Row="1">
+                    <toolkit:Expander IsVisible="{Binding IsAdmin}" Grid.Column="1" Grid.Row="1" WidthRequest="300">
                         <toolkit:Expander.Header>
-                            <Button Text="View Reports" BackgroundColor="#FF5722" TextColor="White"/>
+                            <Button Text="View Reports" BackgroundColor="Blue" TextColor="White"/>
                         </toolkit:Expander.Header>
                         <CollectionView ItemsSource="{Binding Reports}">
                             <CollectionView.ItemTemplate>
@@ -216,7 +216,7 @@
                                     <Grid RowDefinitions="Auto,Auto,Auto">
                                         <HorizontalStackLayout Grid.Row="0">
                                             <Image Source="{Binding Reporter.PictureUrl}" HeightRequest="40" WidthRequest="40" Aspect="AspectFill"/>
-                                            <Label Text="{Binding Reporter.Username}" FontSize="16">
+                                            <Label Text="{Binding Reporter.Username}" FontAttributes="Bold" FontSize="18" TextColor="Blue">
                                                 <Label.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:UserDetailsViewModel}}, Path=NavigateToUserDetailsCommand}" CommandParameter="{Binding Reporter}" />
                                                 </Label.GestureRecognizers>

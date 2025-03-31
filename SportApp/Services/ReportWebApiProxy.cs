@@ -17,13 +17,9 @@ namespace SportApp.Services
         public static string BaseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5274/api/" : "http://localhost:5274/api/";
         public List<Report> events { get; set; }
 
-        public ReportWebApiProxy()
-        {
-            //Set client handler to support cookies!!
-            HttpClientHandler handler = new HttpClientHandler();
-            handler.CookieContainer = new System.Net.CookieContainer();
-
-            this.client = new HttpClient(handler, true);
+        public ReportWebApiProxy(ClientHandler h)
+        { 
+            this.client = new HttpClient(h.handler, false);
             this.baseUrl = BaseAddress;
             JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions()
             {

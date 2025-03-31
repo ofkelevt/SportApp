@@ -17,13 +17,10 @@ namespace SportApp.Services
         private JsonSerializerOptions jsonSerializerOptions;
         private string baseUrl;
         public static string BaseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5274/api/" : "http://localhost:5274/api/";
-        public ChatCommentWebAPIProxy()
+        public ChatCommentWebAPIProxy(ClientHandler h)
         {
-            //Set client handler to support cookies!!
-            HttpClientHandler handler = new HttpClientHandler();
-            handler.CookieContainer = new System.Net.CookieContainer();
 
-            this.client = new HttpClient(handler, true);
+            this.client = new HttpClient(h.handler, false);
             this.baseUrl = BaseAddress;
             JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions()
             {

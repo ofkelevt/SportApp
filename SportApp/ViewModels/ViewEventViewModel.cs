@@ -13,6 +13,7 @@ namespace SportApp.ViewModels
 {
     public class ViewEventViewModel : ViewModel
     {
+        private ClientHandler h;
         private Event selcetedEvent;
         public Event SelectedEvent { get { return selcetedEvent; }
             set 
@@ -82,15 +83,15 @@ namespace SportApp.ViewModels
         private string commentText;
         public string CommentText { get { return commentText; } set { commentText = value; OnPropertyChanged(nameof(CommentText)); } } 
 
-        public ViewEventViewModel(Event selectedEvent)
+        public ViewEventViewModel(Event selectedEvent, ClientHandler h)
         {
-            
+            this.h = h;
             SelectedEvent = selectedEvent;
-            proxyEvent = new EventActionsWebAPIProxy();
-            proxyEventToUser = new EventToUserWebApiProxy();
-            proxyUser = new UserWebAPIProxy();
-            proxyloginDemoWebAPI = new LoginDemoWebAPIProxy();
-            proxyChatComment = new ChatCommentWebAPIProxy();
+            proxyEvent = new EventActionsWebAPIProxy(h);
+            proxyEventToUser = new EventToUserWebApiProxy(h);
+            proxyUser = new UserWebAPIProxy(h);
+            proxyloginDemoWebAPI = new LoginDemoWebAPIProxy(h);
+            proxyChatComment = new ChatCommentWebAPIProxy(h);
             // Example: Fill Users and UserToEvents collections (assuming they're already populated)
             Users = new ObservableCollection<Users>();
             chatComments = new ObservableCollection<ChatComment>();
@@ -182,7 +183,7 @@ namespace SportApp.ViewModels
             }
             else
             {
-                var viewModel = new LoginViewModel(proxyloginDemoWebAPI);
+                var viewModel = new LoginViewModel(proxyloginDemoWebAPI,h);
                 var viewEventPage = new LoginView(viewModel);
                 await Shell.Current.Navigation.PushAsync(viewEventPage);
             }
@@ -329,7 +330,7 @@ namespace SportApp.ViewModels
         {
             if (selectedUser != null)
             {
-                var viewModel = new UserDetailsViewModel(selectedUser);
+                var viewModel = new UserDetailsViewModel(h, selectedUser);
                 var viewEventPage = new UserDetailsPage(viewModel);
                 await Shell.Current.Navigation.PushAsync(viewEventPage);
             }

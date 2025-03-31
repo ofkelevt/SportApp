@@ -8,15 +8,17 @@ namespace SportApp.ViewModels
 {
     public class SignUpViewModel : ViewModel
     {
+        private ClientHandler h;
         private Users _user;
         private UserWebAPIProxy proxy;
 
         public ICommand SignUpCommand { get; }
 
-        public SignUpViewModel()
+        public SignUpViewModel(ClientHandler h)
         {
+            this.h = h;
             _user = new Users(); // Initialize the User object
-            proxy = new UserWebAPIProxy(); // Assume proxy is implemented
+            proxy = new UserWebAPIProxy(h); // Assume proxy is implemented
             SignUpCommand = new Command(async ()=> await SignUp()); // Bind the sign-up action
         }
 
@@ -104,7 +106,7 @@ namespace SportApp.ViewModels
                         "Failed to register user.", "OK");
                     return;
                 }
-                var proxylogin = new LoginDemoWebAPIProxy();
+                var proxylogin = new LoginDemoWebAPIProxy(h);
                 await proxylogin.LoginAsync(Username, Password);
 
                 await App.Current.MainPage.DisplayAlert("Success",

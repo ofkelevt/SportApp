@@ -54,7 +54,8 @@
                                             <Image Source="{Binding Crator.PictureUrl}" 
                                                    HeightRequest="40" WidthRequest="40" 
                                                    Aspect="AspectFill" VerticalOptions="Center" />
-                                            <Label Text="{Binding Crator.Username}" 
+                                            <Label Text="{Binding Crator.Username}"
+                                                   TextColor="Blue"
                                                    FontSize="Medium" 
                                                    FontAttributes="Bold" 
                                                    VerticalOptions="Center" >

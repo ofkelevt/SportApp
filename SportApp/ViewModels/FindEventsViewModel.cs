@@ -11,6 +11,7 @@ namespace SportApp.ViewModels
 {
     public class FindEventsViewModel : ViewModel
     {
+        ClientHandler h;
         private EventActionsWebAPIProxy proxy;
         private UserWebAPIProxy proxyUser;
         private ObservableCollection<Event> events;
@@ -28,7 +29,7 @@ namespace SportApp.ViewModels
         public ICommand RefreshCommand { get; set; }
         public ICommand JoinCommand { get; }
         public ICommand fuck { get; }
-        public ICommand NavigateToUserDetailsCommand => new Command<Users>(async (u) => await NavigateToUserDetails(u));
+        public ICommand NavigateToUserDetailsCommand => new Command<string>(async (u) => await NavigateToUserDetails(u));
 
         private string input1;
         public string Input1
@@ -73,10 +74,11 @@ namespace SportApp.ViewModels
             }
         }
 
-        public FindEventsViewModel()
+        public FindEventsViewModel(ClientHandler h)
         {
-            proxy = new EventActionsWebAPIProxy();
-            proxyUser = new UserWebAPIProxy();
+            this.h = h;
+            proxy = new EventActionsWebAPIProxy(h);
+            proxyUser = new UserWebAPIProxy(h);
             Events = new ObservableCollection<Event>();
             Users = new ObservableCollection<Users>();
             // Command for refreshing the list
@@ -161,7 +163,7 @@ namespace SportApp.ViewModels
         {
             if (selectedEvent != null)
             {
-                var viewModel = new ViewEventViewModel(selectedEvent);
+                var viewModel = new ViewEventViewModel(selectedEvent,h);
                 var viewEventPage = new ViewEvent(viewModel);
                 await Shell.Current.Navigation.PushAsync(viewEventPage);
             }
@@ -179,14 +181,12 @@ namespace SportApp.ViewModels
             shellViewModel.IsAdmin = true;
             IsRefreshing = true;
         }
-        private async Task NavigateToUserDetails(Users selectedUser)
+        private async Task NavigateToUserDetails(string selectedUserName)
         {
-            if (selectedUser != null)
-            {
-                var viewModel = new UserDetailsViewModel(selectedUser);
-                var viewEventPage = new UserDetailsPage(viewModel);
-                await Shell.Current.Navigation.PushAsync(viewEventPage);
-            }
+            var e = (await proxyUser.GetUsersAsync()).First(u => u.Username == selectedUserName);
+            var viewModel = new UserDetailsViewModel(h,e);
+            var viewEventPage = new UserDetailsPage(viewModel);
+            await Shell.Current.Navigation.PushAsync(viewEventPage);
         }
     }
 }

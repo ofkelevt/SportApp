@@ -19,13 +19,10 @@ namespace SportApp.Services
 
         public List<Event> events { get; set;}
 
-        public EventActionsWebAPIProxy()
+        public EventActionsWebAPIProxy(ClientHandler h)
         {
             //Set client handler to support cookies!!
-            HttpClientHandler handler = new HttpClientHandler();
-            handler.CookieContainer = new System.Net.CookieContainer();
-
-            this.client = new HttpClient(handler, true);
+            this.client = new HttpClient(h.handler, false);
             this.baseUrl = BaseAddress;
             JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions()
             {

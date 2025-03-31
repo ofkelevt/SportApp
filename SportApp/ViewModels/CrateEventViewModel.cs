@@ -11,6 +11,7 @@ namespace SportApp.ViewModels
         
         private Event _event;
         private EventActionsWebAPIProxy proxy;
+        private ClientHandler h;
         public DateTime MinimumEndDate { get; } = DateTime.Now;
         public ICommand CreateEventCommand { get; }
         public string EventName { get { return _event.EventName; } set { _event.EventName = value; OnPropertyChanged(nameof(EventName));} }
@@ -21,9 +22,10 @@ namespace SportApp.ViewModels
         public string PictureUrl { get { return _event.PictureUrl; } set { _event.PictureUrl = value; OnPropertyChanged(nameof(PictureUrl)); } }
         public string Description { get { return _event.Description; } set { _event.Description = value; OnPropertyChanged(nameof(Description)); } }
         public DateTime EndsAt { get { return _event.EndsAt; } set { _event.EndsAt = value; OnPropertyChanged(nameof(EndsAt)); } }
-        public CrateEventViewModel()
+        public CrateEventViewModel(ClientHandler h)
         {
-            proxy = new EventActionsWebAPIProxy();
+            this.h = h;
+            proxy = new EventActionsWebAPIProxy(h);
             _event = new Event(); // Initialize the Event object
             CreateEventCommand = new Command(async ()=> await CreateEvent());
         }
@@ -41,7 +43,7 @@ namespace SportApp.ViewModels
             _event.CreatedAt = DateTime.Now; // Set the current date
             try
             {
-                var proxyLogin = new LoginDemoWebAPIProxy();
+                var proxyLogin = new LoginDemoWebAPIProxy(h);
                 var s = await proxyLogin.CheckAsync();
                 if (s == "User is not logged in!" || s == "FAILED WITH EXCEPTION!")
                 {
