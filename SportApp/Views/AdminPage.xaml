@@ -5,49 +5,86 @@
              xmlns:viewModels="clr-namespace:SportApp.ViewModels"
              x:Class="SportApp.Views.AdminPage"
              Title="Admin Dashboard">
+    <ContentPage.Resources>
+        <Style x:Key="HeaderLabelStyle" TargetType="Label">
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="TextColor" Value="#333333" />
+            <Setter Property="VerticalOptions" Value="Center" />
+        </Style>
+        <Style x:Key="UserNameStyle" TargetType="Label">
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="TextColor" Value="#2196F3" />
+        </Style>
+        <Style x:Key="UserInfoStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="TextColor" Value="#555555" />
+        </Style>
+        <Style x:Key="MetricLabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="VerticalOptions" Value="Center" />
+        </Style>
+    </ContentPage.Resources>
 
-    <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
-        <VerticalStackLayout Spacing="5" Margin="10">
+    <Grid RowDefinitions="Auto,*">
+        <!-- Material Design-inspired app bar with drop shadow -->
+        <Frame Grid.Row="0" BackgroundColor="#2196F3" Padding="10" HasShadow="True" CornerRadius="0">
+            <Label Text="Admin Dashboard" FontAttributes="Bold" FontSize="20" TextColor="White" />
+        </Frame>
 
-            <!-- Header Row -->
-            <Grid ColumnDefinitions="2*,*,*" Padding="5" BackgroundColor="LightGray">
-                <Label Text="User" FontAttributes="Bold" FontSize="18" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Start" />
-                <Label Text="Rating" FontAttributes="Bold" FontSize="18" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" />
-                <Label Text="Reports" FontAttributes="Bold" FontSize="18" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Center" />
-            </Grid>
+        <RefreshView Grid.Row="1" Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
+            <VerticalStackLayout Spacing="0" Margin="0">
+                <!-- Header Row -->
+                <Grid ColumnDefinitions="2*,*,*" Padding="12,10" BackgroundColor="#F5F5F5">
+                    <Label Text="User" Grid.Column="0" Style="{StaticResource HeaderLabelStyle}" Margin="50,0,0,0" />
+                    <Label Text="Rating" Grid.Column="1" Style="{StaticResource HeaderLabelStyle}" HorizontalOptions="Center" />
+                    <Label Text="Reports" Grid.Column="2" Style="{StaticResource HeaderLabelStyle}" HorizontalOptions="Center" />
+                </Grid>
 
-            <!-- Data Rows -->
-            <CollectionView ItemsSource="{Binding Users}" VerticalScrollBarVisibility="Always">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Users">
-                        <Grid ColumnDefinitions="2*,*,*" Padding="5">
+                <!-- Data Rows -->
+                <CollectionView ItemsSource="{Binding Users}" VerticalScrollBarVisibility="Always"
+                                Margin="0,0,0,10" SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Users">
+                            <Frame Padding="10,8" Margin="5,5,5,0" HasShadow="False" BorderColor="#EEEEEE">
+                                <Grid ColumnDefinitions="2*,*,*">
+                                    <!-- Column 1: User Info -->
+                                    <StackLayout Grid.Column="0" Orientation="Horizontal" Spacing="10">
+                                        <Frame CornerRadius="25" IsClippedToBounds="True" Padding="0" 
+                                               HeightRequest="50" WidthRequest="50" BorderColor="Transparent">
+                                            <Image Source="{Binding PictureUrl}" Aspect="AspectFill"/>
+                                        </Frame>
+                                        <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                                            <Label Text="{Binding Username}" Style="{StaticResource UserNameStyle}">
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:AdminViewModel}}, Path=NavigateToUserDetailsCommand}" CommandParameter="{Binding .}" />
+                                                </Label.GestureRecognizers>
+                                            </Label>
+                                            <HorizontalStackLayout Spacing="5">
+                                                <Label Text="{Binding FirstName}" Style="{StaticResource UserInfoStyle}" />
+                                                <Label Text="{Binding LastName}" Style="{StaticResource UserInfoStyle}" />
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                    </StackLayout>
 
-                            <!-- Column 1: User Info -->
-                            <StackLayout Grid.Column="0" Orientation="Horizontal" Spacing="10">
-                                <Image Source="{Binding PictureUrl}" HeightRequest="50" WidthRequest="50" Aspect="AspectFill"/>
-                                <VerticalStackLayout>
-                                    <Label Text="{Binding Username}" FontAttributes="Bold" FontSize="18" TextColor="Blue">
-                                        <Label.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:AdminViewModel}}, Path=NavigateToUserDetailsCommand}" CommandParameter="{Binding .}" />
-                                        </Label.GestureRecognizers>
-                                    </Label>
-                                    <Label Text="{Binding FirstName}" FontSize="14"/>
-                                    <Label Text="{Binding LastName}" FontSize="14"/>
-                                </VerticalStackLayout>
-                            </StackLayout>
+                                    <!-- Column 2: Rating -->
+                                    <Label Grid.Column="1" Text="{Binding Rating}" Style="{StaticResource MetricLabelStyle}" />
 
-                            <!-- Column 2: Rating -->
-                            <Label Grid.Column="1" Text="{Binding Rating}" FontSize="18" VerticalOptions="Center" HorizontalOptions="Center" />
-
-                            <!-- Column 3: Report Count -->
-                            <Label Grid.Column="2" Text="{Binding ReportCount}" FontSize="18" VerticalOptions="Center" HorizontalOptions="Center" />
-
-                            <!-- Row Separator -->
-                            <BoxView HeightRequest="1" BackgroundColor="Gray" Grid.ColumnSpan="3" VerticalOptions="End" />
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </VerticalStackLayout>
-    </RefreshView>
+                                    <!-- Column 3: Report Count with visual indicator -->
+                                    <StackLayout Grid.Column="2" HorizontalOptions="Center" VerticalOptions="Center">
+                                        <Frame BackgroundColor="#FFECB3" CornerRadius="12" Padding="8,2">
+                                            <Label Text="{Binding ReportCount}" TextColor="#FF8F00" FontAttributes="Bold" 
+                                                   HorizontalOptions="Center" />
+                                        </Frame>
+                                    </StackLayout>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </RefreshView>
+    </Grid>
 </ContentPage>

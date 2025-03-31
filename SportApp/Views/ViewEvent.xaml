@@ -9,30 +9,30 @@
              BackgroundColor="White">
     <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
         <ScrollView>
-            <VerticalStackLayout Padding="15" Spacing="20">
+            <VerticalStackLayout Padding="12" Spacing="16">
 
                 <!-- Event Image -->
-                <Frame CornerRadius="15" HasShadow="True">
+                <Frame CornerRadius="12" HasShadow="True" Padding="0" Margin="0,0,0,8">
                     <Image Source="{Binding SelectedEvent.PictureUrl}" 
-                           HeightRequest="250" Aspect="AspectFill"/>
+                           HeightRequest="200" Aspect="AspectFill"/>
                 </Frame>
 
                 <!-- Event Title and Creator Info -->
-                <VerticalStackLayout HorizontalOptions="Center" Spacing="5">
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="8">
 
                     <!-- Event Name: Switch Between Label and Entry -->
                     <Label Text="{Binding SelectedEvent.EventName}" 
-                           FontSize="32" FontAttributes="Bold" HorizontalOptions="Center">
+                           FontSize="24" FontAttributes="Bold" HorizontalOptions="Center">
                         <Label.Triggers>
                             <DataTrigger TargetType="Label" 
                                          Binding="{Binding IsCreator}" Value="True">
                                 <Setter Property="IsVisible" Value="False"/>
                             </DataTrigger>
                         </Label.Triggers>
-
                     </Label>
 
-                    <Entry Text="{Binding SelectedEvent.EventName}" FontSize="32" HorizontalOptions="Center">
+                    <Entry Text="{Binding SelectedEvent.EventName}" FontSize="24" HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center" WidthRequest="300">
                         <Entry.Triggers>
                             <DataTrigger TargetType="Entry" Binding="{Binding IsCreator}" Value="False">
                                 <Setter Property="IsVisible" Value="False"/>
@@ -40,37 +40,42 @@
                         </Entry.Triggers>
                     </Entry>
 
-                    <VerticalStackLayout Spacing="10" Padding="5">
-                        <HorizontalStackLayout HorizontalOptions="Center">
-                            <Image Source="{Binding SelectedEvent.Crator.PictureUrl}" HeightRequest="100" WidthRequest="100" Aspect="AspectFill"/>
-                            <Label Text="{Binding SelectedEvent.Crator.Username, FallbackValue='[No Username]'}" FontSize="40" FontAttributes="Bold">
+                    <VerticalStackLayout Spacing="8" Padding="4">
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
+                            <Frame CornerRadius="25" Padding="0" IsClippedToBounds="True"
+                                   HeightRequest="50" WidthRequest="50">
+                                <Image Source="{Binding SelectedEvent.Crator.PictureUrl}" 
+                                       Aspect="AspectFill"/>
+                            </Frame>
+                            <Label Text="{Binding SelectedEvent.Crator.Username, FallbackValue='[No Username]'}" 
+                                   FontSize="20" FontAttributes="Bold" VerticalOptions="Center">
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ViewEventViewModel}}, Path=NavigateToUserDetailsCommand}" CommandParameter="{Binding SelectedEvent.Crator}" />
                                 </Label.GestureRecognizers>
                             </Label>
-                            <!-- Checkbox Visible Only for Creator -->
                         </HorizontalStackLayout>
-                        <HorizontalStackLayout HorizontalOptions="Center">
-                            <Label Text="{Binding SelectedEvent.Crator.FirstName}" FontSize="40" FontAttributes="Bold"/>
-                            <Label Text="{Binding SelectedEvent.Crator.LastName}" FontSize="40" FontAttributes="Bold"/>
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="4">
+                            <Label Text="{Binding SelectedEvent.Crator.FirstName}" FontSize="18"/>
+                            <Label Text="{Binding SelectedEvent.Crator.LastName}" FontSize="18"/>
                         </HorizontalStackLayout>
                     </VerticalStackLayout>
                 </VerticalStackLayout>
 
                 <!-- Event Details: Location, CreatedAt, and EndsAt -->
-                <Frame CornerRadius="10" BackgroundColor="#f1f1f1" Padding="10">
-                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto, Auto, Auto, Auto">
+                <Frame CornerRadius="10" BackgroundColor="#f1f1f1" Padding="12" Margin="0,4,0,8">
+                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto, Auto, Auto, Auto" RowSpacing="8" ColumnSpacing="8">
 
                         <!-- City Name -->
-                        <Label Text="Location:" FontAttributes="Bold" Grid.Row="0" Grid.Column="0"/>
-                        <Label Text="{Binding SelectedEvent.CityName}" Grid.Row="0" Grid.Column="1">
+                        <Label Text="Location:" FontAttributes="Bold" Grid.Row="0" Grid.Column="0" VerticalOptions="Center"/>
+                        <Label Text="{Binding SelectedEvent.CityName}" Grid.Row="0" Grid.Column="1" VerticalOptions="Center">
                             <Label.Triggers>
                                 <DataTrigger TargetType="Label" Binding="{Binding IsCreator}" Value="True">
                                     <Setter Property="IsVisible" Value="False"/>
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
-                        <Entry Text="{Binding SelectedEvent.CityName}" Grid.Row="0" Grid.Column="1">
+                        <Entry Text="{Binding SelectedEvent.CityName}" Grid.Row="0" Grid.Column="1" 
+                               VerticalOptions="Center" HeightRequest="40">
                             <Entry.Triggers>
                                 <DataTrigger TargetType="Entry" Binding="{Binding IsCreator}" Value="False">
                                     <Setter Property="IsVisible" Value="False"/>
@@ -79,15 +84,16 @@
                         </Entry>
 
                         <!-- Street Name -->
-                        <Label Text="Street:" FontAttributes="Bold" Grid.Row="1" Grid.Column="0"/>
-                        <Label Text="{Binding SelectedEvent.StreetName}" Grid.Row="1" Grid.Column="1">
+                        <Label Text="Street:" FontAttributes="Bold" Grid.Row="1" Grid.Column="0" VerticalOptions="Center"/>
+                        <Label Text="{Binding SelectedEvent.StreetName}" Grid.Row="1" Grid.Column="1" VerticalOptions="Center">
                             <Label.Triggers>
                                 <DataTrigger TargetType="Label" Binding="{Binding IsCreator}" Value="True">
                                     <Setter Property="IsVisible" Value="False"/>
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
-                        <Entry Text="{Binding SelectedEvent.StreetName}" Grid.Row="1" Grid.Column="1">
+                        <Entry Text="{Binding SelectedEvent.StreetName}" Grid.Row="1" Grid.Column="1" 
+                               VerticalOptions="Center" HeightRequest="40">
                             <Entry.Triggers>
                                 <DataTrigger TargetType="Entry" Binding="{Binding IsCreator}" Value="False">
                                     <Setter Property="IsVisible" Value="False"/>
@@ -96,15 +102,16 @@
                         </Entry>
 
                         <!-- House Number -->
-                        <Label Text="Number:" FontAttributes="Bold" Grid.Row="2" Grid.Column="0"/>
-                        <Label Text="{Binding SelectedEvent.HomeNum}" Grid.Row="2" Grid.Column="1">
+                        <Label Text="Number:" FontAttributes="Bold" Grid.Row="2" Grid.Column="0" VerticalOptions="Center"/>
+                        <Label Text="{Binding SelectedEvent.HomeNum}" Grid.Row="2" Grid.Column="1" VerticalOptions="Center">
                             <Label.Triggers>
                                 <DataTrigger TargetType="Label" Binding="{Binding IsCreator}" Value="True">
                                     <Setter Property="IsVisible" Value="False"/>
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
-                        <Entry Text="{Binding SelectedEvent.HomeNum}" Grid.Row="2" Grid.Column="1">
+                        <Entry Text="{Binding SelectedEvent.HomeNum}" Grid.Row="2" Grid.Column="1" 
+                               Keyboard="Numeric" VerticalOptions="Center" HeightRequest="40">
                             <Entry.Triggers>
                                 <DataTrigger TargetType="Entry" Binding="{Binding IsCreator}" Value="False">
                                     <Setter Property="IsVisible" Value="False"/>
@@ -113,19 +120,20 @@
                         </Entry>
 
                         <!-- CreatedAt and EndsAt -->
-                        <Label Text="Created At:" FontAttributes="Bold" Grid.Row="3" Grid.Column="0"/>
+                        <Label Text="Created:" FontAttributes="Bold" Grid.Row="3" Grid.Column="0" VerticalOptions="Center"/>
                         <Label Text="{Binding SelectedEvent.CreatedAt, StringFormat='{0:MMM dd, yyyy HH:mm}'}" 
-                               Grid.Row="3" Grid.Column="1"/>
+                               Grid.Row="3" Grid.Column="1" VerticalOptions="Center"/>
 
-                        <Label Text="Ends At:" FontAttributes="Bold" Grid.Row="4" Grid.Column="0"/>
+                        <Label Text="Ends:" FontAttributes="Bold" Grid.Row="4" Grid.Column="0" VerticalOptions="Center"/>
                         <Label Text="{Binding SelectedEvent.EndsAt, StringFormat='{0:MMM dd, yyyy HH:mm}'}" 
-                               Grid.Row="4" Grid.Column="1"/>
+                               Grid.Row="4" Grid.Column="1" VerticalOptions="Center"/>
                     </Grid>
                 </Frame>
 
                 <!-- Event Description -->
-                <Frame CornerRadius="10" BackgroundColor="#f5f5f5" Padding="10">
+                <Frame CornerRadius="10" BackgroundColor="#f5f5f5" Padding="12" Margin="0,0,0,8">
                     <StackLayout>
+                        <Label Text="Description" FontSize="16" FontAttributes="Bold" Margin="0,0,0,4"/>
                         <Label Text="{Binding SelectedEvent.Description}" FontSize="16" TextColor="Gray">
                             <Label.Triggers>
                                 <DataTrigger TargetType="Label" Binding="{Binding IsCreator}" Value="True">
@@ -133,171 +141,217 @@
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
-                        <Entry Text="{Binding SelectedEvent.Description}" FontSize="16">
-                            <Entry.Triggers>
-                                <DataTrigger TargetType="Entry" Binding="{Binding IsCreator}" Value="False">
+                        <Editor Text="{Binding SelectedEvent.Description}" FontSize="16" 
+                                AutoSize="TextChanges" HeightRequest="100">
+                            <Editor.Triggers>
+                                <DataTrigger TargetType="Editor" Binding="{Binding IsCreator}" Value="False">
                                     <Setter Property="IsVisible" Value="False"/>
                                 </DataTrigger>
-                            </Entry.Triggers>
-                        </Entry>
+                            </Editor.Triggers>
+                        </Editor>
                     </StackLayout>
                 </Frame>
 
-                <!-- Expander for Participants -->
-                <Grid ColumnDefinitions="*,*">
-                    <toolkit:Expander Grid.Column="1">
-                        <toolkit:Expander.Header>
-                            <Button Text="View Participants" BackgroundColor="#6A1B9A" TextColor="White"/>
-                        </toolkit:Expander.Header>
-                        <Grid RowDefinitions="Auto,*">
-                            <CollectionView ItemsSource="{Binding Users}">
-                                <CollectionView.ItemTemplate>
-                                    <DataTemplate x:DataType="Models:Users">
-                                        <Grid RowDefinitions="Auto,Auto">
-                                            <HorizontalStackLayout Grid.Row="0">
-                                                <Image Source="{Binding PictureUrl}" HeightRequest="40" WidthRequest="40" Aspect="AspectFill"/>
-                                                <Label Text="{Binding Username}" FontSize="16">
-                                                    <Label.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ViewEventViewModel}}, Path=NavigateToUserDetailsCommand}" CommandParameter="{Binding .}" />
-                                                    </Label.GestureRecognizers>
-                                                </Label>
-                                                <!-- Checkbox Visible Only for Creator -->
-                                                <CheckBox IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:ViewEventViewModel}}, Path=IsCreator}"
-                                                          IsChecked="{Binding IsCheck, Mode=TwoWay}"/>
-                                            </HorizontalStackLayout>
-                                            <HorizontalStackLayout Grid.Row="1">
-                                                <Label Text="{Binding FirstName}" FontSize="16"/>
-                                                <Label Text="{Binding LastName}" FontSize="16"/>
-                                            </HorizontalStackLayout>
-                                        </Grid>
-                                    </DataTemplate>
-                                </CollectionView.ItemTemplate>
-                            </CollectionView>
-                            <!-- Kick and Waitlist Buttons -->
-                            <StackLayout Grid.Row="1" Orientation="Horizontal" IsVisible="{Binding IsCreator}">
-                                <Button Text="Kick" Command="{Binding KickCommand}" BackgroundColor="Red" TextColor="White" />
-                                <Button Text="Waitlist" Command="{Binding WaitlistCommand}" BackgroundColor="Orange" TextColor="White" />
-                            </StackLayout>
-                        </Grid>
-                    </toolkit:Expander>
-
-                    <!-- Expander for Waitlisted Users -->
-                    <toolkit:Expander Grid.Column="0">
-                        <toolkit:Expander.Header>
-                            <Button Text="View Waitlisted" BackgroundColor="#FF5722" TextColor="White"/>
-                        </toolkit:Expander.Header>
-                        <Grid RowDefinitions="Auto,*">
-                            <CollectionView ItemsSource="{Binding WaitListedUsers}">
-                                <CollectionView.ItemTemplate>
-                                    <DataTemplate x:DataType="Models:Users">
-                                        <Grid RowDefinitions="Auto,Auto">
-                                            <HorizontalStackLayout Grid.Row="0">
-                                                <Image Source="{Binding PictureUrl}" HeightRequest="40" WidthRequest="40" Aspect="AspectFill"/>
-                                                <Label Text="{Binding Username}" FontSize="16">
-                                                    <Label.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ViewEventViewModel}}, Path=NavigateToUserDetailsCommand}" CommandParameter="{Binding .}" />
-                                                    </Label.GestureRecognizers>
-                                                </Label>
-                                                <!-- Checkbox Visible Only for Creator -->
-                                                <CheckBox IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:ViewEventViewModel}}, Path=IsCreator}"
-                                                          IsChecked="{Binding IsCheck, Mode=TwoWay}"/>
-                                            </HorizontalStackLayout>
-                                            <HorizontalStackLayout Grid.Row="1">
-                                                <Label Text="{Binding FirstName }" FontSize="16"/>
-                                                <Label Text="{Binding LastName}" FontSize="16"/>
-                                            </HorizontalStackLayout>
-                                        </Grid>
-                                    </DataTemplate>
-                                </CollectionView.ItemTemplate>
-                            </CollectionView>
-                            <StackLayout Grid.Row="1" Orientation="Horizontal" IsVisible="{Binding IsCreator}">
-                                <Button Text="Reject" Command="{Binding RejectCommand}" BackgroundColor="Red" TextColor="White" />
-                                <Button Text="Accept" Command="{Binding AcceptCommand}" BackgroundColor="Green" TextColor="White" />
-                            </StackLayout>
-                        </Grid>
-                    </toolkit:Expander>
-                </Grid>
-                <!-- Join Button -->
-                <Button Text="Join Event" 
-                Command="{Binding JoinCommand}" 
-                BackgroundColor="#4CAF50" TextColor="White" 
-                Margin="0,10,0,0" HeightRequest="50">
-                    <Button.Triggers>
-                        <DataTrigger TargetType="Button" Binding="{Binding IsCratorOrJoin}" Value="true">
-                            <Setter Property="IsVisible" Value="False"/>
-                        </DataTrigger>
-                        
-                    </Button.Triggers>
-                </Button>
-                <Button Text="Leave Event" 
-                        Command="{Binding LeaveCommand}" 
-                        BackgroundColor="Red" TextColor="White" 
-                        Margin="0,10,0,0" HeightRequest="50">
-                    <Button.Triggers>
-                        <DataTrigger TargetType="Button" Binding="{Binding IsJoin}" Value="false">
-                            <Setter Property="IsVisible" Value="False"/>
-                        </DataTrigger>
-
-                    </Button.Triggers>
-                </Button>
+                <!-- Save Changes Button for Creator -->
                 <Button Text="Save Changes" Command="{Binding SaveCommand}" 
-                        BackgroundColor="#4CAF50" TextColor="White" HeightRequest="50">
+                        BackgroundColor="#4CAF50" TextColor="White" HeightRequest="50"
+                        CornerRadius="8" FontSize="16" Margin="0,0,0,16">
                     <Button.Triggers>
                         <DataTrigger TargetType="Button" Binding="{Binding IsCreator}" Value="false">
                             <Setter Property="IsVisible" Value="False"/>
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
-                <CollectionView ItemsSource="{Binding ChatComments}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="Models:ChatComment">
-                            <Grid RowDefinitions="Auto,Auto,Auto,Auto">
-                                <HorizontalStackLayout Grid.Row="0">
-                                    <Image Source="{Binding Commenter.PictureUrl}" HeightRequest="40" WidthRequest="40" Aspect="AspectFill"/>
-                                    <Label Text="{Binding Commenter.Username, FallbackValue='[No Username]'}" FontSize="16"/>
-                                </HorizontalStackLayout>
-                                <HorizontalStackLayout Grid.Row="1">
-                                    <Label Text="{Binding Commenter.FirstName }" FontSize="16"/>
-                                    <Label Text="{Binding Commenter.LastName}" FontSize="16"/>
-                                </HorizontalStackLayout>
-                                <Frame CornerRadius="15" HasShadow="True" Grid.Row="2">
-                                    <StackLayout>
-                                        <Label Text="{Binding CommentText}" FontSize="16"/>
-                                        <Label Text="{Binding CreatedAt, StringFormat='Reported on: {0:MMM dd, yyyy HH:mm}'}" />
-                                    </StackLayout>
-                                </Frame>
-                                <Button Text="Delete" TextColor="White" BackgroundColor="Red" 
-                Grid.Row="2" HorizontalOptions="End" WidthRequest="80"
-                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ViewEventViewModel}}, Path=DelteCommantCommand}" 
-                CommandParameter="{Binding .}">
-                                    <Button.Triggers>
-                                        <DataTrigger TargetType="Button" Binding="{Binding IsCommenter}" Value="false">
-                                            <Setter Property="IsVisible" Value="False"/>
-                                        </DataTrigger>
 
-                                    </Button.Triggers>
-                                </Button>
+                <!-- Expandable Sections for Participants and Waitlist -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="8" Margin="0,0,0,16">
+                    <!-- Expander for Waitlisted Users -->
+                    <toolkit:Expander Grid.Column="0">
+                        <toolkit:Expander.Header>
+                            <Button Text="Waitlisted" BackgroundColor="#FF5722" TextColor="White"
+                                    HeightRequest="44" CornerRadius="8" FontSize="14"/>
+                        </toolkit:Expander.Header>
+                        <Frame Padding="8" BorderColor="#DDDDDD" HasShadow="False" Margin="0,4,0,0">
+                            <Grid RowDefinitions="Auto,Auto" RowSpacing="8">
+                                <CollectionView ItemsSource="{Binding WaitListedUsers}" HeightRequest="200"
+                                               EmptyView="No waitlisted users">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="Models:Users">
+                                            <Grid Padding="4" RowSpacing="2" RowDefinitions="Auto,Auto">
+                                                <HorizontalStackLayout Grid.Row="0" Spacing="8">
+                                                    <Frame CornerRadius="16" Padding="0" IsClippedToBounds="True"
+                                                           HeightRequest="32" WidthRequest="32">
+                                                        <Image Source="{Binding PictureUrl}" Aspect="AspectFill"/>
+                                                    </Frame>
+                                                    <Label Text="{Binding Username}" FontSize="14" VerticalOptions="Center">
+                                                        <Label.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ViewEventViewModel}}, Path=NavigateToUserDetailsCommand}" CommandParameter="{Binding .}" />
+                                                        </Label.GestureRecognizers>
+                                                    </Label>
+                                                    <CheckBox IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:ViewEventViewModel}}, Path=IsCreator}"
+                                                              IsChecked="{Binding IsCheck, Mode=TwoWay}" VerticalOptions="Center"/>
+                                                </HorizontalStackLayout>
+                                                <Label Grid.Row="1" Margin="40,0,0,0" FontSize="12">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding FirstName}"/>
+                                                            <Span Text=" "/>
+                                                            <Span Text="{Binding LastName}"/>
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+
+                                <HorizontalStackLayout Grid.Row="1" Spacing="8" IsVisible="{Binding IsCreator}">
+                                    <Button Text="Reject" Command="{Binding RejectCommand}" BackgroundColor="Red" TextColor="White" 
+                                            HeightRequest="40" CornerRadius="8" FontSize="12" WidthRequest="75"/>
+                                    <Button Text="Accept" Command="{Binding AcceptCommand}" BackgroundColor="Green" TextColor="White" 
+                                            HeightRequest="40" CornerRadius="8" FontSize="12" WidthRequest="75"/>
+                                </HorizontalStackLayout>
                             </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-                <Frame CornerRadius="15" HasShadow="True">
-                    <Entry Text="{Binding CommentText}" IsVisible="{Binding IsCratorOrJoin}">
-                        <Entry.Triggers>
-                            <DataTrigger TargetType="Entry" Binding="{Binding IsCratorOrJoin}" Value="False">
-                                <Setter Property="IsVisible" Value="False"/>
-                            </DataTrigger>
-                        </Entry.Triggers>
-                    </Entry>
-                </Frame>
-                <Button Text="upload comments " Command="{Binding CommentCommand}"
-                        BackgroundColor="#4CAF50" TextColor="White" HeightRequest="50">
+                        </Frame>
+                    </toolkit:Expander>
+
+                    <!-- Expander for Participants -->
+                    <toolkit:Expander Grid.Column="1">
+                        <toolkit:Expander.Header>
+                            <Button Text="Participants" BackgroundColor="#6A1B9A" TextColor="White"
+                                    HeightRequest="44" CornerRadius="8" FontSize="14"/>
+                        </toolkit:Expander.Header>
+                        <Frame Padding="8" BorderColor="#DDDDDD" HasShadow="False" Margin="0,4,0,0">
+                            <Grid RowDefinitions="Auto,Auto" RowSpacing="8">
+                                <CollectionView ItemsSource="{Binding Users}" HeightRequest="200"
+                                               EmptyView="No participants yet">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="Models:Users">
+                                            <Grid Padding="4" RowSpacing="2" RowDefinitions="Auto,Auto">
+                                                <HorizontalStackLayout Grid.Row="0" Spacing="8">
+                                                    <Frame CornerRadius="16" Padding="0" IsClippedToBounds="True"
+                                                           HeightRequest="32" WidthRequest="32">
+                                                        <Image Source="{Binding PictureUrl}" Aspect="AspectFill"/>
+                                                    </Frame>
+
+                                                    <Label Text="{Binding Username}" FontSize="14" VerticalOptions="Center">
+                                                        <Label.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ViewEventViewModel}}, Path=NavigateToUserDetailsCommand}" CommandParameter="{Binding .}" />
+                                                        </Label.GestureRecognizers>
+                                                    </Label>
+                                                    <CheckBox IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:ViewEventViewModel}}, Path=IsCreator}"
+                                                              IsChecked="{Binding IsCheck, Mode=TwoWay}" VerticalOptions="Center"/>
+                                                </HorizontalStackLayout>
+                                                <Label Grid.Row="1" Margin="40,0,0,0" FontSize="12">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding FirstName}"/>
+                                                            <Span Text=" "/>
+                                                            <Span Text="{Binding LastName}"/>
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+
+                                <HorizontalStackLayout Grid.Row="1" Spacing="8" IsVisible="{Binding IsCreator}">
+                                    <Button Text="Kick" Command="{Binding KickCommand}" BackgroundColor="Red" TextColor="White" 
+                                            HeightRequest="40" CornerRadius="8" FontSize="12" WidthRequest="75"/>
+                                    <Button Text="Waitlist" Command="{Binding WaitlistCommand}" BackgroundColor="Orange" TextColor="White" 
+                                            HeightRequest="40" CornerRadius="8" FontSize="12" WidthRequest="75"/>
+                                </HorizontalStackLayout>
+                            </Grid>
+                        </Frame>
+                    </toolkit:Expander>
+                </Grid>
+
+                <!-- Join/Leave Event Buttons -->
+                <Button Text="Join Event" 
+                        Command="{Binding JoinCommand}" 
+                        BackgroundColor="#4CAF50" TextColor="White" 
+                        HeightRequest="50" CornerRadius="8" FontSize="16">
                     <Button.Triggers>
-                        <DataTrigger TargetType="Button" Binding="{Binding IsCratorOrJoin}" Value="false">
+                        <DataTrigger TargetType="Button" Binding="{Binding IsCratorOrJoin}" Value="true">
                             <Setter Property="IsVisible" Value="False"/>
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
+
+                <Button Text="Leave Event" 
+                        Command="{Binding LeaveCommand}" 
+                        BackgroundColor="Red" TextColor="White" 
+                        HeightRequest="50" CornerRadius="8" FontSize="16">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding IsJoin}" Value="false">
+                            <Setter Property="IsVisible" Value="False"/>
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+
+                <!-- Comments Section -->
+                <Label Text="Comments" FontSize="18" FontAttributes="Bold" Margin="0,16,0,8"/>
+                <CollectionView ItemsSource="{Binding ChatComments}" EmptyView="No comments yet"
+                                Margin="0,0,0,8">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="Models:ChatComment">
+                            <Frame BorderColor="#EEEEEE" CornerRadius="12" Padding="12" Margin="0,0,0,8">
+                                <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="4">
+                                    <HorizontalStackLayout Grid.Row="0" Spacing="8">
+                                        <Frame CornerRadius="16" Padding="0" IsClippedToBounds="True"
+                                               HeightRequest="32" WidthRequest="32">
+                                            <Image Source="{Binding Commenter.PictureUrl}" Aspect="AspectFill"/>
+                                        </Frame>
+                                        <VerticalStackLayout Spacing="0">
+                                            <Label Text="{Binding Commenter.Username, FallbackValue='[No Username]'}" 
+                                                   FontSize="14" FontAttributes="Bold"/>
+                                            <Label FontSize="12">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="{Binding Commenter.FirstName}"/>
+                                                        <Span Text=" "/>
+                                                        <Span Text="{Binding Commenter.LastName}"/>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                        </VerticalStackLayout>
+                                    </HorizontalStackLayout>
+
+                                    <StackLayout Grid.Row="1" Margin="0,4,0,0">
+                                        <Label Text="{Binding CommentText}" FontSize="14"/>
+                                        <Label Text="{Binding CreatedAt, StringFormat='{0:MMM dd, yyyy HH:mm}'}" 
+                                               FontSize="12" TextColor="Gray"/>
+                                    </StackLayout>
+
+                                    <Button Text="Delete" TextColor="White" BackgroundColor="Red" 
+                                            Grid.Row="2" HorizontalOptions="End" WidthRequest="70"
+                                            HeightRequest="35" CornerRadius="6" FontSize="12"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ViewEventViewModel}}, Path=DelteCommantCommand}" 
+                                            CommandParameter="{Binding .}">
+                                        <Button.Triggers>
+                                            <DataTrigger TargetType="Button" Binding="{Binding IsCommenter}" Value="false">
+                                                <Setter Property="IsVisible" Value="False"/>
+                                            </DataTrigger>
+                                        </Button.Triggers>
+                                    </Button>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!-- Comment Input Area -->
+                <Frame CornerRadius="12" BorderColor="#DDDDDD" HasShadow="False" Padding="4"
+                       IsVisible="{Binding IsCratorOrJoin}">
+                    <Grid ColumnDefinitions="*, Auto">
+                        <Entry Placeholder="Write a comment..." Text="{Binding CommentText}" 
+                               Grid.Column="0" VerticalOptions="Center"/>
+                        <Button Text="Post" Command="{Binding CommentCommand}"
+                                Grid.Column="1" BackgroundColor="#4CAF50" TextColor="White" 
+                                HeightRequest="40" WidthRequest="70" CornerRadius="8" Margin="4,0,0,0"/>
+                    </Grid>
+                </Frame>
             </VerticalStackLayout>
         </ScrollView>
     </RefreshView>
