@@ -78,8 +78,9 @@ namespace SportApp.Services
         {
             try
             {
+                EventSend e = new EventSend(updatedEvent);
                 // Serialize the updated object to JSON
-                var content = JsonContent.Create(updatedEvent);
+                var content = JsonContent.Create(e);
 
                 // Send the PUT request to the appropriate endpoint (e.g., /events/{id})
                 var response = await client.PutAsync($"{baseUrl}UserToEvents/{updatedEvent.EventId}", content);
@@ -112,7 +113,8 @@ namespace SportApp.Services
             string url = $"{this.baseUrl}Events";
             try 
             { 
-                string json = JsonSerializer.Serialize(events, jsonSerializerOptions);
+                EventSend e = new EventSend(events);
+                string json = JsonSerializer.Serialize(e, jsonSerializerOptions);
                 //string json = JsonSerializer.Serialize(new{ Email=email,Password=password},jsonSerializerOptions);
                 StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PostAsync(url, content);

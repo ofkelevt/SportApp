@@ -17,7 +17,7 @@ namespace SportApp.Models
 
         public string? CityName { get; set; }
 
-        public string? PictureUrl { get; set; }
+        public Byte[]? PictureUrl { get; set; }
 
         public string Sport { get; set; }
 

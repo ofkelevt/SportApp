@@ -6,14 +6,20 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:Models="clr-namespace:SportApp.Models"
              x:DataType="vm:ViewEventViewModel"
+             xmlns:converters="clr-namespace:SportApp.Converters"
              BackgroundColor="White">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
         <ScrollView>
             <VerticalStackLayout Padding="12" Spacing="16">
 
                 <!-- Event Image -->
                 <Frame CornerRadius="12" HasShadow="True" Padding="0" Margin="0,0,0,8">
-                    <Image Source="{Binding SelectedEvent.PictureUrl}" 
+                    <Image Source="{Binding SelectedEvent.PictureUrl, Converter={StaticResource ByteArrayToImageSourceConverter}}" 
                            HeightRequest="200" Aspect="AspectFill"/>
                 </Frame>
 
@@ -181,7 +187,7 @@
                                                 <HorizontalStackLayout Grid.Row="0" Spacing="8">
                                                     <Frame CornerRadius="16" Padding="0" IsClippedToBounds="True"
                                                            HeightRequest="32" WidthRequest="32">
-                                                        <Image Source="{Binding PictureUrl}" Aspect="AspectFill"/>
+                                                        <Image Source="{Binding PictureUrl, Converter={StaticResource ByteArrayToImageSourceConverter}}" Aspect="AspectFill"/>
                                                     </Frame>
                                                     <Label Text="{Binding Username}" FontSize="14" VerticalOptions="Center">
                                                         <Label.GestureRecognizers>
@@ -231,7 +237,7 @@
                                                 <HorizontalStackLayout Grid.Row="0" Spacing="8">
                                                     <Frame CornerRadius="16" Padding="0" IsClippedToBounds="True"
                                                            HeightRequest="32" WidthRequest="32">
-                                                        <Image Source="{Binding PictureUrl}" Aspect="AspectFill"/>
+                                                        <Image Source="{Binding PictureUrl, Converter={StaticResource ByteArrayToImageSourceConverter}}" Aspect="AspectFill"/>
                                                     </Frame>
 
                                                     <Label Text="{Binding Username}" FontSize="14" VerticalOptions="Center">
@@ -301,7 +307,7 @@
                                     <HorizontalStackLayout Grid.Row="0" Spacing="8">
                                         <Frame CornerRadius="16" Padding="0" IsClippedToBounds="True"
                                                HeightRequest="32" WidthRequest="32">
-                                            <Image Source="{Binding Commenter.PictureUrl}" Aspect="AspectFill"/>
+                                            <Image Source="{Binding Commenter.PictureUrl, Converter={StaticResource ByteArrayToImageSourceConverter}}" Aspect="AspectFill"/>
                                         </Frame>
                                         <VerticalStackLayout Spacing="0">
                                             <Label Text="{Binding Commenter.Username, FallbackValue='[No Username]'}" 

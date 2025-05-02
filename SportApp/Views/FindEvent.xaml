@@ -50,69 +50,22 @@
 
         <!-- Filter Section - Each filter in its own row -->
         <!-- -->
-        <VerticalStackLayout Grid.Row="1" Spacing="12">
-            <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto">
-                <Entry Grid.Column="0"
-                    Placeholder="Event Name filter" 
-                    Text="{Binding Input1}"
-                    Style="{StaticResource FilterEntryStyle}">
-                    <Entry.Behaviors>
-                        <toolkit:EventToCommandBehavior
-                             EventName="TextChanged"
-                             Command="{Binding OnFilterTextChangedENCommand}" />
-                    </Entry.Behaviors>
-                </Entry>
-                <Button Grid.Column="1"
-                        Text="Apply" 
-                        Command="{Binding FilterCommandEN}"
-                        Style="{StaticResource FilterButtonStyle}" />
-            </Grid>
-
-            <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto">
-                <Entry Grid.Column="0"
-    Placeholder="Event Name filter" 
-    Text="{Binding Input2}"
-    Style="{StaticResource FilterEntryStyle}">
-                    <Entry.Behaviors>
-                        <toolkit:EventToCommandBehavior
-             EventName="TextChanged"
-             Command="{Binding OnFilterTextChangedSCommand}" />
-                    </Entry.Behaviors>
-                </Entry>
-                <!--<Entry Grid.Column="0"
-                       Placeholder="Sport filter" 
-                       Text="{Binding Input2}"
-                       TextChanged="{Binding OnFilterTextChangedS}"
-                       Style="{StaticResource FilterEntryStyle}" />-->
-                <Button Grid.Column="1"
-                        Text="Apply" 
-                        Command="{Binding FilterCommandS}" 
-                        Style="{StaticResource FilterButtonStyle}" />
-            </Grid>
-
-            <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto">
-                <Entry Grid.Column="0"
-    Placeholder="Event Name filter" 
-    Text="{Binding Input3}"
-    Style="{StaticResource FilterEntryStyle}">
-                    <Entry.Behaviors>
-                        <toolkit:EventToCommandBehavior
-             EventName="TextChanged"
-             Command="{Binding OnFilterTextChangedCCommand}" />
-                    </Entry.Behaviors>
-                </Entry>
-                <!--<Entry Grid.Column="0"
-                       Placeholder="Creator Name filter" 
-                       Text="{Binding Input3}" 
-                       TextChanged="{Binding OnFilterTextChangedC}"
-                       Style="{StaticResource FilterEntryStyle}" />-->
-                <Button Grid.Column="1"
-                        Text="Apply" 
-                        Command="{Binding FilterCommandC}" 
-                        Style="{StaticResource FilterButtonStyle}" />
-            </Grid>
-        </VerticalStackLayout>
-
+        <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto">
+            <Entry Grid.Column="0"
+        Placeholder="Event Name filter" 
+        Text="{Binding Input}"
+        Style="{StaticResource FilterEntryStyle}">
+                <Entry.Behaviors>
+                    <toolkit:EventToCommandBehavior
+                 EventName="TextChanged"
+                 Command="{Binding OnFilterTextChangedCommand}" />
+                </Entry.Behaviors>
+            </Entry>
+            <Button Grid.Column="1"
+            Text="Apply" 
+            Command="{Binding FilterCommand}"
+            Style="{StaticResource FilterButtonStyle}" />
+        </Grid>
         <!-- Events List with RefreshView - Improved styling -->
         <RefreshView Grid.Row="2" Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
             <CollectionView ItemsSource="{Binding Events}" Margin="0,5,0,0">

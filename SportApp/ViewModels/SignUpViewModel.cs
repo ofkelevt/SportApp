@@ -1,8 +1,10 @@
 ﻿using SportApp.Models;
 using SportApp.Services;
 using System;
-using SportApp.Views;
+using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.Maui.Controls;
 
 namespace SportApp.ViewModels
 {
@@ -13,13 +15,15 @@ namespace SportApp.ViewModels
         private UserWebAPIProxy proxy;
 
         public ICommand SignUpCommand { get; }
+        public ICommand UploadPictureCommand { get; }
 
         public SignUpViewModel(ClientHandler h)
         {
             this.h = h;
             _user = new Users(); // Initialize the User object
             proxy = new UserWebAPIProxy(h); // Assume proxy is implemented
-            SignUpCommand = new Command(async ()=> await SignUp()); // Bind the sign-up action
+            SignUpCommand = new Command(async () => await SignUp()); // Bind the sign-up action
+            UploadPictureCommand = new Command(async () => await UploadPicture()); // Bind the upload picture action
         }
 
         public string Username
@@ -34,7 +38,7 @@ namespace SportApp.ViewModels
             set { _user.Password = value; OnPropertyChanged(nameof(Password)); }
         }
 
-        public string? PictureUrl
+        public byte[] PictureUrl
         {
             get => _user.PictureUrl;
             set { _user.PictureUrl = value; OnPropertyChanged(nameof(PictureUrl)); }
@@ -82,6 +86,31 @@ namespace SportApp.ViewModels
             set { _user.Description = value; OnPropertyChanged(nameof(Description)); }
         }
 
+        private async Task UploadPicture()
+        {
+            try
+            {
+                var result = await FilePicker.Default.PickAsync(new PickOptions
+                {
+                    FileTypes = FilePickerFileType.Images,
+                    PickerTitle = "Select a Profile Picture"
+                });
+
+                if (result != null)
+                {
+                    using var stream = await result.OpenReadAsync();
+                    using var memoryStream = new MemoryStream();
+                    await stream.CopyToAsync(memoryStream);
+                    PictureUrl = memoryStream.ToArray();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (e.g., user cancels the file picker)
+                Console.WriteLine($"Error picking file: {ex.Message}");
+            }
+        }
+
         private async Task SignUp()
         {
             if (string.IsNullOrWhiteSpace(_user.Username) ||
@@ -98,7 +127,7 @@ namespace SportApp.ViewModels
             {
                 // Assume UserId is set to 0/null on backend to create a new user
                 _user.UserId = 0;
-                _user.Urank = 1; 
+                _user.Urank = 1;
                 bool success = await proxy.PostUserAsync(_user);
                 if (!success)
                 {

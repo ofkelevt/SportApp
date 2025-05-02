@@ -79,7 +79,8 @@ namespace SportApp.Services
             string url = $"{this.baseUrl}Users";
             try
             {
-                string json = JsonSerializer.Serialize(events, jsonSerializerOptions);
+                UserSend u = new UserSend(events);
+                string json = JsonSerializer.Serialize(u, jsonSerializerOptions);
                 //string json = JsonSerializer.Serialize(new{ Email=email,Password=password},jsonSerializerOptions);
                 StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PostAsync(url, content);
@@ -101,10 +102,11 @@ namespace SportApp.Services
         }
         public async Task<bool> PutUserAsync(Users user)
         {
+            UserSend u = new UserSend(user);
             string url = $"{this.baseUrl}Users/{user.UserId}"; // Assuming the user ID is part of the URL for the PUT request
             try
             {
-                string json = JsonSerializer.Serialize(user, jsonSerializerOptions);
+                string json = JsonSerializer.Serialize(u, jsonSerializerOptions);
                 StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PutAsync(url, content);
                 return response.IsSuccessStatusCode;

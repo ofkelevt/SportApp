@@ -19,7 +19,7 @@ namespace SportApp.ViewModels
         public string HomeNum { get { return _event.HomeNum; } set { _event.HomeNum = value; OnPropertyChanged(nameof(HomeNum)); } }
         public string StreetName { get { return _event.StreetName; } set { _event.StreetName = value; OnPropertyChanged(nameof(StreetName)); }}
         public string CityName { get { return _event.CityName; } set { _event.CityName = value; OnPropertyChanged(nameof(CityName)); } }
-        public string PictureUrl { get { return _event.PictureUrl; } set { _event.PictureUrl = value; OnPropertyChanged(nameof(PictureUrl)); } }
+        public Byte[] PictureUrl { get { return _event.PictureUrl; } set { _event.PictureUrl = value; OnPropertyChanged(nameof(PictureUrl)); } }
         public string Description { get { return _event.Description; } set { _event.Description = value; OnPropertyChanged(nameof(Description)); } }
         public DateTime EndsAt { get { return _event.EndsAt; } set { _event.EndsAt = value; OnPropertyChanged(nameof(EndsAt)); } }
         public CrateEventViewModel(ClientHandler h)
@@ -84,5 +84,36 @@ namespace SportApp.ViewModels
             await Shell.Current.Navigation.PushAsync(findeventpage);
         }
 
+        public ICommand UploadPictureCommand { get; }
+
+        public CrateEventViewModel()
+        {
+            UploadPictureCommand = new Command(OnUploadPicture);
+        }
+
+        private async void OnUploadPicture()
+        {
+            try
+            {
+                var result = await FilePicker.Default.PickAsync(new PickOptions
+                {
+                    FileTypes = FilePickerFileType.Images,
+                    PickerTitle = "Select an Event Picture"
+                });
+
+                if (result != null)
+                {
+                    using var stream = await result.OpenReadAsync();
+                    using var memoryStream = new MemoryStream();
+                    await stream.CopyToAsync(memoryStream);
+                    PictureUrl = memoryStream.ToArray();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (e.g., user cancels the file picker)
+                Console.WriteLine($"Error picking file: {ex.Message}");
+            }
+        }
     }
 }

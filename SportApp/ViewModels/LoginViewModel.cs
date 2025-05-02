@@ -69,7 +69,7 @@ namespace SportApp.ViewModels
             InServerCall = false;
             this.service = service;
             this.LoginCommand = new Command(OnLogin);
-            this.SignUpCommand = new Command(async () => await OnSignUp());
+            this.SignUpCommand = new Command(async ()=> await OnSignUp());
             this.h = h;
         }
 
@@ -111,11 +111,17 @@ namespace SportApp.ViewModels
         }
 
         public ICommand SignUpCommand { get; set; }
+        //private async Task OnSignUp()
+        //{
+        //    await Shell.Current.GoToAsync(nameof(SignUpPage));
+        //}
         private async Task OnSignUp()
         {
             var viewModel = new SignUpViewModel(h);
             var viewEventPage = new SignUpPage(viewModel);
+            Console.WriteLine("sup");
             await Shell.Current.Navigation.PushAsync(viewEventPage);
+
         }
     }
 }

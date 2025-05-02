@@ -4,12 +4,20 @@
              xmlns:Models="clr-namespace:SportApp.Models"
              x:Class="SportApp.Views.UserDetailsPage"
              x:DataType="viewModels:UserDetailsViewModel"
+             xmlns:converters="clr-namespace:SportApp.Converters"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
         <ScrollView>
             <VerticalStackLayout Padding="15" Spacing="15">
                 <!-- Header with increased touch area and spacing -->
                 <Label Text="{Binding User.Username}" FontSize="Large" HorizontalOptions="Center" FontAttributes="Bold" Margin="0,10,0,5"/>
+                <Image Source="{Binding User.PictureUrl, Converter={StaticResource ByteArrayToImageSourceConverter}}" 
+                        HeightRequest="40" WidthRequest="40" Aspect="AspectFill"/>
 
                 <!-- User Details Frame - improved for mobile -->
                 <Frame CornerRadius="10" BackgroundColor="#f1f1f1" Padding="15" Margin="0,0,0,10">
@@ -150,8 +158,8 @@
                                 <DataTemplate x:DataType="Models:Comment">
                                     <Grid RowDefinitions="Auto,Auto,Auto" Padding="0,5" Margin="0,0,0,10">
                                         <HorizontalStackLayout Grid.Row="0" Spacing="8">
-                                            <Image Source="{Binding Commenter.PictureUrl, FallbackValue='defaultImage.png'}" 
-                                                   HeightRequest="40" WidthRequest="40" Aspect="AspectFill"/>
+                                            <Image Source="{Binding Commenter.PictureUrl, Converter={StaticResource ByteArrayToImageSourceConverter}, FallbackValue='defaultImage.png'}" 
+                                                HeightRequest="40" WidthRequest="40" Aspect="AspectFill"/>
                                             <Label Text="{Binding Commenter.Username, FallbackValue='Anonymous'}" 
                                                    FontAttributes="Bold" FontSize="18" TextColor="#2196F3" VerticalOptions="Center">
                                                 <Label.GestureRecognizers>
@@ -199,7 +207,8 @@
                                 <DataTemplate x:DataType="Models:Report">
                                     <Grid RowDefinitions="Auto,Auto,Auto" Padding="0,5" Margin="0,0,0,10">
                                         <HorizontalStackLayout Grid.Row="0" Spacing="8">
-                                            <Image Source="{Binding Reporter.PictureUrl}" HeightRequest="40" WidthRequest="40" Aspect="AspectFill"/>
+                                            <Image Source="{Binding Reporter.PictureUrl, Converter={StaticResource ByteArrayToImageSourceConverter}}" 
+                                                HeightRequest="40" WidthRequest="40" Aspect="AspectFill"/>
                                             <Label Text="{Binding Reporter.Username}" FontAttributes="Bold" FontSize="18" TextColor="#2196F3" VerticalOptions="Center">
                                                 <Label.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:UserDetailsViewModel}}, Path=NavigateToUserDetailsCommand}" 

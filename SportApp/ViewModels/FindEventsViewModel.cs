@@ -28,6 +28,7 @@ namespace SportApp.ViewModels
             }
         }
         public ObservableCollection<Users> Users { get; set; }
+        public ICommand FilterCommand { get; set; }
         public ICommand FilterCommandEN { get; set; }
         public ICommand FilterCommandS { get; set; }
         public ICommand FilterCommandC { get; set; }
@@ -38,35 +39,15 @@ namespace SportApp.ViewModels
         public ICommand OnFilterTextChangedSCommand { get; }
 
         public ICommand OnFilterTextChangedCCommand { get; }
-
-        private string input1;
-        public string Input1
+        public ICommand OnFilterTextChangedCommand { get; }
+        private string input;
+        public string Input
         {
-            get { return input1; }
+            get { return input; }
             set
             {
-                input1 = value;
-                OnPropertyChanged(nameof(Input1));
-            }
-        }
-        private string input2;
-        public string Input2
-        {
-            get { return input2; }
-            set
-            {
-                input2 = value;
-                OnPropertyChanged(nameof(Input2));
-            }
-        }
-        private string input3;
-        public string Input3
-        {
-            get { return input3; }
-            set
-            {
-                input3 = value;
-                OnPropertyChanged(nameof(Input3));
+                input = value;
+                OnPropertyChanged(nameof(Input));
             }
         }
 
@@ -94,96 +75,27 @@ namespace SportApp.ViewModels
             RefreshCommand = new Command(async () => await ExecuteRefresh());
 
             // Command for filtering the list
-            FilterCommandEN = new Command(async () => await ApplyFilterEN());
-            FilterCommandS = new Command(async () => await ApplyFilterS());
-            FilterCommandC = new Command(async () => await ApplyFilterC());
-            OnFilterTextChangedENCommand = new Command(() => ApplyFilterENRealTime());
-            OnFilterTextChangedSCommand = new Command(() => ApplyFilterSRealTime());
-            OnFilterTextChangedCCommand = new Command(() => ApplyFilterCRealTime());
+            FilterCommand = new Command(async () => await ApplyFilter());
+            OnFilterTextChangedCommand = new Command(()=> ApplyFilterRealTime());
 
             JoinCommand = new Command<Event>(OnJoinEvent);
             NavigateToUserDetailsCommand = new Command<string>(async (u) => await NavigateToUserDetails(u));
             IsRefreshing = true;
         }
 
-        // Real-time filtering methods
-        private void ApplyFilterENRealTime()
-        {
-            if (string.IsNullOrWhiteSpace(Input1) || Input1 == "Event Name filter")
-            {
-                // If input is empty, restore original list or keep current state
-                return;
-            }
-
-            var filteredList = originalEvents
-                .Where(e => Fuzz.Ratio(Input1, e.EventName) > 50) // Lower threshold for real-time filtering
-                .OrderByDescending(e => Fuzz.Ratio(Input1, e.EventName))
-                .ToList();
-
-            EventsRestart(filteredList);
-        }
-
-        private void ApplyFilterSRealTime()
-        {
-            if (string.IsNullOrWhiteSpace(Input2) || Input2 == "sport filter")
-            {
-                // If input is empty, restore original list or keep current state
-                return;
-            }
-
-            var filteredList = originalEvents
-                .Where(e => Fuzz.Ratio(Input2, e.Sport) > 50)
-                .OrderByDescending(e => Fuzz.Ratio(Input2, e.Sport))
-                .ToList();
-
-            EventsRestart(filteredList);
-        }
-
-        private void ApplyFilterCRealTime()
-        {
-            if (string.IsNullOrWhiteSpace(Input3) || Input3 == "Crator Name filter")
-            {
-                // If input is empty, restore original list or keep current state
-                return;
-            }
-
-            if (Users == null || Users.Count == 0)
-            {
-                // Cannot filter without users
-                return;
-            }
-
-            var filteredUsers = Users
-                .Where(e => Fuzz.Ratio(Input3, e.Username) > 50)
-                .OrderByDescending(e => Fuzz.Ratio(Input3, e.Username))
-                .ToList();
-
-            var filteredEvents = new ObservableCollection<Event>();
-            foreach (var user in filteredUsers)
-            {
-                foreach (Event evt in originalEvents.Where(s => s.CratorId == user.UserId))
-                {
-                    filteredEvents.Add(evt);
-                }
-            }
-
-            EventsRestart(filteredEvents.ToList());
-        }
-
-        // Original methods for button clicks
         private async Task ExecuteRefresh()
         {
             // Refresh the list (for example, reload data from a server)
             IsRefreshing = true;
             try
             {
-                var u = await proxyUser.GetUsersAsync();
+                Users =new ObservableCollection<Users>(await proxyUser.GetUsersAsync());
                 var fetchedEvents = await proxy.GetEventsAsync();
 
                 EventsRestart(fetchedEvents);
 
                 foreach (var e in Events)
-                    e.Crator = u.Where(u => u.UserId == e.CratorId).First();
+                    e.Crator = Users.Where(u => u.UserId == e.CratorId).First();
 
                 // Store original events for filtering
                 originalEvents = new ObservableCollection<Event>(Events);
@@ -195,48 +107,83 @@ namespace SportApp.ViewModels
                 Console.WriteLine("exception" + ex.Message);
             }
 
-            Input1 = "Event Name filter";
-            Input2 = "sport filter";
-            Input3 = "Crator Name filter";
+            Input = "filter";
             IsRefreshing = false;
         }
 
-        private async Task ApplyFilterEN()
+
+        // Real-time filtering methods
+        private void ApplyFilterRealTime()
         {
-            var input = Input1;
+            if(string.IsNullOrWhiteSpace(Input) || Input == "filter" || Users == null || Users.Count == 0)
+                return;
+            var filteredList = originalEvents
+                .Where(e => Fuzz.Ratio(Input, e.EventName) > 50) // Lower threshold for real-time filtering
+                .OrderByDescending(e => Fuzz.Ratio(Input, e.EventName))
+                .ToList();
+            var filteredList2 = originalEvents
+                .Where(e => Fuzz.Ratio(Input, e.Sport) > 50)
+                .OrderByDescending(e => Fuzz.Ratio(Input, e.Sport))
+                .ToList();
+            foreach(var e in filteredList2.Where(u => !filteredList.Contains(u)))
+                filteredList.Add(e);
+            var filteredUsers = Users
+                .Where(e => Fuzz.Ratio(Input, e.Username) > 50)
+                .OrderByDescending(e => Fuzz.Ratio(Input, e.Username))
+                .ToList();
+
+            var filteredEvents = new ObservableCollection<Event>();
+            foreach (var user in filteredUsers)
+            {
+                foreach (Event evt in originalEvents.Where(s => s.CratorId == user.UserId))
+                {
+                    filteredEvents.Add(evt);
+                }
+            }
+            filteredList2 = filteredEvents.ToList();
+            foreach (var e in filteredList2.Where(u => !filteredList.Contains(u)))
+                filteredList.Add(e);
+        }
+
+        // Original methods for button clicks
+        private async Task ApplyFilter()
+        {
+            var input = Input;
             await ExecuteRefresh();
-            Input1 = input;
+            Input = input;
+            var list = ApplyFilterC();
+            var list2 = ApplyFilterEN();
+            foreach (var item in list2.Where(u => !list.Contains(u)))
+                list.Add(item);
+            list2 = ApplyFilterS();
+            foreach (var item in list2.Where(u => !list.Contains(u)))
+                list.Add(item);
+            EventsRestart(list.ToList());
+        }
+        private List<Event> ApplyFilterEN()
+        {
+            
             var filteredList = Events
                 .Where(e => Fuzz.Ratio(input, e.EventName) > 200)
-                .OrderByDescending(e => Fuzz.Ratio(input, e.EventName))
+                .OrderByDescending(e => Fuzz.Ratio(Input, e.EventName))
                 .ToList();
-            EventsRestart(filteredList);
+            return filteredList;
         }
 
-        private async Task ApplyFilterS()
+        private List<Event> ApplyFilterS()
         {
-            var input = Input2;
-            await ExecuteRefresh();
-            Input2 = input;
             var filteredList = Events
-                .Where(e => Fuzz.Ratio(input, e.Sport) > 50)
-                .OrderByDescending(e => Fuzz.Ratio(input, e.Sport))
+                .Where(e => Fuzz.Ratio(Input, e.Sport) > 50)
+                .OrderByDescending(e => Fuzz.Ratio(Input, e.Sport))
                 .ToList();
-            EventsRestart(filteredList);
+            return filteredList;
         }
 
-        private async Task ApplyFilterC()
+        private List<Event> ApplyFilterC()
         {
-            var input = Input3;
-            await ExecuteRefresh();
-            Input3 = input;
-            if (Users == null || Users.Count == 0)
-            {
-                Users = new ObservableCollection<Users>(await proxyUser.GetUsersAsync());
-            }
             var filteredList = Users
-                .Where(e => Fuzz.Ratio(input, e.Username) > 50)
-                .OrderByDescending(e => Fuzz.Ratio(input, e.Username))
+                .Where(e => Fuzz.Ratio(Input, e.Username) > 50)
+                .OrderByDescending(e => Fuzz.Ratio(Input, e.Username))
                 .ToList();
 
             Users = new ObservableCollection<Users>(filteredList);
@@ -246,7 +193,7 @@ namespace SportApp.ViewModels
                 foreach (Event t in Events.Where(s => s.CratorId == user.UserId))
                 { e.Add(t); }
             }
-            EventsRestart(e.ToList());
+            return e.ToList();
         }
 
         private async void OnJoinEvent(Event selectedEvent)

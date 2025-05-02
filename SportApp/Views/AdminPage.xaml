@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:models="clr-namespace:SportApp.Models"
              xmlns:viewModels="clr-namespace:SportApp.ViewModels"
+             xmlns:converters="clr-namespace:SportApp.Converters"
              x:Class="SportApp.Views.AdminPage"
              Title="Admin Dashboard">
     <ContentPage.Resources>
@@ -26,35 +27,32 @@
             <Setter Property="HorizontalOptions" Value="Center" />
             <Setter Property="VerticalOptions" Value="Center" />
         </Style>
+        <converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
     </ContentPage.Resources>
 
     <Grid RowDefinitions="Auto,*">
-        <!-- Material Design-inspired app bar with drop shadow -->
         <Frame Grid.Row="0" BackgroundColor="#2196F3" Padding="10" HasShadow="True" CornerRadius="0">
             <Label Text="Admin Dashboard" FontAttributes="Bold" FontSize="20" TextColor="White" />
         </Frame>
 
         <RefreshView Grid.Row="1" Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
             <VerticalStackLayout Spacing="0" Margin="0">
-                <!-- Header Row -->
                 <Grid ColumnDefinitions="2*,*,*" Padding="12,10" BackgroundColor="#F5F5F5">
                     <Label Text="User" Grid.Column="0" Style="{StaticResource HeaderLabelStyle}" Margin="50,0,0,0" />
                     <Label Text="Rating" Grid.Column="1" Style="{StaticResource HeaderLabelStyle}" HorizontalOptions="Center" />
                     <Label Text="Reports" Grid.Column="2" Style="{StaticResource HeaderLabelStyle}" HorizontalOptions="Center" />
                 </Grid>
 
-                <!-- Data Rows -->
                 <CollectionView ItemsSource="{Binding Users}" VerticalScrollBarVisibility="Always"
                                 Margin="0,0,0,10" SelectionMode="None">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:Users">
                             <Frame Padding="10,8" Margin="5,5,5,0" HasShadow="False" BorderColor="#EEEEEE">
                                 <Grid ColumnDefinitions="2*,*,*">
-                                    <!-- Column 1: User Info -->
                                     <StackLayout Grid.Column="0" Orientation="Horizontal" Spacing="10">
                                         <Frame CornerRadius="25" IsClippedToBounds="True" Padding="0" 
                                                HeightRequest="50" WidthRequest="50" BorderColor="Transparent">
-                                            <Image Source="{Binding PictureUrl}" Aspect="AspectFill"/>
+                                            <Image Source="{Binding PictureUrl, Converter={StaticResource ByteArrayToImageSourceConverter}}" Aspect="AspectFill" />
                                         </Frame>
                                         <VerticalStackLayout Spacing="2" VerticalOptions="Center">
                                             <Label Text="{Binding Username}" Style="{StaticResource UserNameStyle}">
@@ -69,10 +67,8 @@
                                         </VerticalStackLayout>
                                     </StackLayout>
 
-                                    <!-- Column 2: Rating -->
                                     <Label Grid.Column="1" Text="{Binding Rating}" Style="{StaticResource MetricLabelStyle}" />
 
-                                    <!-- Column 3: Report Count with visual indicator -->
                                     <StackLayout Grid.Column="2" HorizontalOptions="Center" VerticalOptions="Center">
                                         <Frame BackgroundColor="#FFECB3" CornerRadius="12" Padding="8,2">
                                             <Label Text="{Binding ReportCount}" TextColor="#FF8F00" FontAttributes="Bold" 
