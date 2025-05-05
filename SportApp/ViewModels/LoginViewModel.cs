@@ -58,10 +58,10 @@ namespace SportApp.ViewModels
             }
         }
         public bool NotInServerCall
-        {
+        {   
             get
             {
-                return !this.InServerCall;
+                    return !this.InServerCall;
             }
         }
         public LoginViewModel(LoginDemoWebAPIProxy service, ClientHandler h)
@@ -76,6 +76,10 @@ namespace SportApp.ViewModels
         public ICommand LoginCommand { get; set; }
         private async void OnLogin()
         {
+            var viewModel = new SignUpViewModel(h);
+            var viewEventPage = new SignUpPage(viewModel);
+            Console.WriteLine("sup");
+            await Shell.Current.Navigation.PushAsync(viewEventPage);
             //Choose the way you want to blobk the page while indicating a server call
             InServerCall = true;
             //LoginInfo userInfo = new LoginInfo()

@@ -117,11 +117,11 @@
                                 </Label>
 
                                 <Button
-                                Margin="0,20,0,0"
-                                Command="{Binding SignUpCommand}"
-                                HorizontalOptions="FillAndExpand"
-                                Text="Signup"
-                                VerticalOptions="CenterAndExpand" />
+Margin="0,20,0,0"
+Command="{Binding SignUpCommand}"
+HorizontalOptions="FillAndExpand"
+Text="Signup"
+VerticalOptions="CenterAndExpand" />
                             </VerticalStackLayout>
 
                         </VerticalStackLayout>

@@ -79,11 +79,29 @@ namespace SportApp.Services
             string url = $"{this.baseUrl}Users";
             try
             {
-                UserSend u = new UserSend(events);
-                string json = JsonSerializer.Serialize(u, jsonSerializerOptions);
-                //string json = JsonSerializer.Serialize(new{ Email=email,Password=password},jsonSerializerOptions);
-                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(url, content);
+                UserSend user = new UserSend(events);
+                var form = new MultipartFormDataContent();
+
+                // Add simple string values
+                form.Add(new StringContent(user.FirstName), nameof(user.FirstName));
+                form.Add(new StringContent(user.LastName), nameof(user.LastName));
+                form.Add(new StringContent(user.Username), nameof(user.Username));
+                form.Add(new StringContent(user.Password), nameof(user.Password));
+                form.Add(new StringContent(user.PhoneNum ?? ""), nameof(user.PhoneNum));
+                form.Add(new StringContent(user.HomeNum ?? ""), nameof(user.HomeNum));
+                form.Add(new StringContent(user.StreetName ?? ""), nameof(user.StreetName));
+                form.Add(new StringContent(user.CityName ?? ""), nameof(user.CityName));
+                form.Add(new StringContent(user.Urank.ToString()), nameof(user.Urank));
+                form.Add(new StringContent(user.Description ?? ""), nameof(user.Description));
+
+                // Add file (PictureUrl)
+                if (user.PictureUrl != null)
+                {
+                    form.Add(user.PictureUrl, "PictureUrl", "profile.jpg"); // name must match the parameter in controller
+                }
+
+                // Send request
+                var response = await client.PostAsync(url, form);
                 if (response.IsSuccessStatusCode)
                 {
                     return true; // Event successfully created

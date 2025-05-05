@@ -131,7 +131,7 @@ namespace SportApp.ViewModels
                 bool success = await proxy.PostUserAsync(_user);
                 if (!success)
                 {
-                    await App.Current.MainPage.DisplayAlert("Error",
+                        await App.Current.MainPage.DisplayAlert("Error",
                         "Failed to register user.", "OK");
                     return;
                 }
