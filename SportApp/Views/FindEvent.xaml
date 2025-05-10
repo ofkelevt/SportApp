@@ -4,6 +4,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="SportApp.Views.FindEvent"
              xmlns:viewmodel="clr-namespace:SportApp.ViewModels"
+             xmlns:converters="clr-namespace:SportApp.Converters"
              x:DataType="viewmodel:FindEventsViewModel"
              xmlns:Models="clr-namespace:SportApp.Models"
              x:Name="FindEventPage">
@@ -15,7 +16,9 @@
             <Setter Property="Margin" Value="0,0,10,0" />
             <Setter Property="PlaceholderColor" Value="#888888" />
         </Style>
-
+        <ResourceDictionary>
+            <converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+        </ResourceDictionary>
         <Style x:Key="FilterButtonStyle" TargetType="Button">
             <Setter Property="BackgroundColor" Value="#6A1B9A" />
             <Setter Property="TextColor" Value="White" />
@@ -91,7 +94,7 @@
                                                IsClippedToBounds="True"
                                                Padding="0"
                                                BorderColor="Transparent">
-                                            <Image Source="{Binding Crator.PictureUrl}" 
+                                            <Image Source="{Binding Crator.PictureUrl ,Converter={StaticResource ByteArrayToImageSourceConverter}}" 
                                                    Aspect="AspectFill" />
                                         </Frame>
 
@@ -160,7 +163,7 @@
                                        IsClippedToBounds="True"
                                        Padding="0"
                                        BorderColor="Transparent">
-                                    <Image Source="{Binding PictureUrl}" 
+                                    <Image Source="{Binding PictureUrl , Converter={StaticResource ByteArrayToImageSourceConverter}}" 
                                            Aspect="AspectFill" />
                                 </Frame>
 

@@ -79,37 +79,11 @@ namespace SportApp.Services
             string url = $"{this.baseUrl}Users";
             try
             {
-                UserSend user = new UserSend(events);
-                var form = new MultipartFormDataContent();
-
-                // Add simple string values
-                form.Add(new StringContent(user.FirstName), nameof(user.FirstName));
-                form.Add(new StringContent(user.LastName), nameof(user.LastName));
-                form.Add(new StringContent(user.Username), nameof(user.Username));
-                form.Add(new StringContent(user.Password), nameof(user.Password));
-                form.Add(new StringContent(user.PhoneNum ?? ""), nameof(user.PhoneNum));
-                form.Add(new StringContent(user.HomeNum ?? ""), nameof(user.HomeNum));
-                form.Add(new StringContent(user.StreetName ?? ""), nameof(user.StreetName));
-                form.Add(new StringContent(user.CityName ?? ""), nameof(user.CityName));
-                form.Add(new StringContent(user.Urank.ToString()), nameof(user.Urank));
-                form.Add(new StringContent(user.Description ?? ""), nameof(user.Description));
-
-                // Add file (PictureUrl)
-                if (user.PictureUrl != null)
-                {
-                    form.Add(user.PictureUrl, "PictureUrl", "profile.jpg"); // name must match the parameter in controller
-                }
-
-                // Send request
-                var response = await client.PostAsync(url, form);
-                if (response.IsSuccessStatusCode)
-                {
-                    return true; // Event successfully created
-                }
-                else
-                {
-                    return false; // Handle failure case
-                }
+                string json = JsonSerializer.Serialize(events, jsonSerializerOptions);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PostAsync(url, content);
+                Console.WriteLine(response.Content.ToString());
+                return response.IsSuccessStatusCode;
             }
             catch (Exception ex)
             {
@@ -120,11 +94,10 @@ namespace SportApp.Services
         }
         public async Task<bool> PutUserAsync(Users user)
         {
-            UserSend u = new UserSend(user);
             string url = $"{this.baseUrl}Users/{user.UserId}"; // Assuming the user ID is part of the URL for the PUT request
             try
             {
-                string json = JsonSerializer.Serialize(u, jsonSerializerOptions);
+                string json = JsonSerializer.Serialize(user, jsonSerializerOptions);
                 StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PutAsync(url, content);
                 return response.IsSuccessStatusCode;

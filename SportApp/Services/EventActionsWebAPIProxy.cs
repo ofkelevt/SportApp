@@ -76,23 +76,19 @@ namespace SportApp.Services
         }
         public async Task<bool> putEventAsync(Event updatedEvent)
         {
+            string url = $"{this.baseUrl}Events/{updatedEvent.EventId}";
             try
             {
-                EventSend e = new EventSend(updatedEvent);
-                // Serialize the updated object to JSON
-                var content = JsonContent.Create(e);
-
-                // Send the PUT request to the appropriate endpoint (e.g., /events/{id})
-                var response = await client.PutAsync($"{baseUrl}UserToEvents/{updatedEvent.EventId}", content);
-
-                // Check if the request was successful (HTTP 2xx)
+                string json = JsonSerializer.Serialize(updatedEvent, jsonSerializerOptions);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PutAsync(url, content);
                 return response.IsSuccessStatusCode;
             }
             catch (Exception ex)
             {
-                // Log the error and return false to indicate failure
-                Console.WriteLine($"Error updating UserToEvent: {ex.Message}");
-                return false;
+                // Handle exceptions (logging, rethrowing, etc.)
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return false; // Return false on error
             }
         }
         public async Task DeleteEventAsync(int eventId)
@@ -113,8 +109,7 @@ namespace SportApp.Services
             string url = $"{this.baseUrl}Events";
             try 
             { 
-                EventSend e = new EventSend(events);
-                string json = JsonSerializer.Serialize(e, jsonSerializerOptions);
+                string json = JsonSerializer.Serialize(events, jsonSerializerOptions);
                 //string json = JsonSerializer.Serialize(new{ Email=email,Password=password},jsonSerializerOptions);
                 StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PostAsync(url, content);

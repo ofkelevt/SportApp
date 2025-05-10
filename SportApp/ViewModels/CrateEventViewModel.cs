@@ -28,6 +28,7 @@ namespace SportApp.ViewModels
             proxy = new EventActionsWebAPIProxy(h);
             _event = new Event(); // Initialize the Event object
             CreateEventCommand = new Command(async ()=> await CreateEvent());
+            UploadPictureCommand = new Command(OnUploadPicture);
         }
 
         private async Task CreateEvent()
@@ -85,12 +86,6 @@ namespace SportApp.ViewModels
         }
 
         public ICommand UploadPictureCommand { get; }
-
-        public CrateEventViewModel()
-        {
-            UploadPictureCommand = new Command(OnUploadPicture);
-        }
-
         private async void OnUploadPicture()
         {
             try
