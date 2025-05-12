@@ -20,8 +20,8 @@ namespace SportApp.ViewModels
             get => _isRefreshing;
             set { _isRefreshing = value; OnPropertyChanged(); }
         }
-
-        public ObservableCollection<Users> Users { get; set; }
+        private ObservableCollection<Users> users;
+        public ObservableCollection<Users> Users { get => users; set { users = value; OnPropertyChanged(); } }
         public ICommand RefreshCommand { get; }
         public ICommand NavigateToUserDetailsCommand => new Command<Users>(async (u) => await NavigateToUserDetails(u));
         public AdminViewModel(ClientHandler h)
@@ -33,7 +33,6 @@ namespace SportApp.ViewModels
             _proxyLoginDemo = new LoginDemoWebAPIProxy(h);
             Users = new ObservableCollection<Users>();
             RefreshCommand = new Command(async () => await RefreshUsersAsync());
-            IsRefreshing = true; // Load data initially
         }
 
         private async Task RefreshUsersAsync()
@@ -64,7 +63,8 @@ namespace SportApp.ViewModels
                     if (i != 0)
                         user.Rating = sum / i;
                     else user.Rating = -1;
-                    Users.Add(user);
+                    if(Users.Where(u => u.UserId == user.UserId).FirstOrDefault()==null)
+                        Users.Add(user);
                     
                 }
             }

@@ -40,6 +40,7 @@ namespace SportApp.ViewModels
 
         public ICommand OnFilterTextChangedCCommand { get; }
         public ICommand OnFilterTextChangedCommand { get; }
+        public ICommand ReloadCommand { get; }
         private string input;
         public string Input
         {
@@ -80,7 +81,6 @@ namespace SportApp.ViewModels
 
             JoinCommand = new Command<Event>(OnJoinEvent);
             NavigateToUserDetailsCommand = new Command<string>(async (u) => await NavigateToUserDetails(u));
-            IsRefreshing = true;
         }
 
         private async Task ExecuteRefresh()
@@ -95,7 +95,10 @@ namespace SportApp.ViewModels
                 EventsRestart(fetchedEvents);
 
                 foreach (var e in Events)
+                {
                     e.Crator = Users.Where(u => u.UserId == e.CratorId).First();
+                    e.Crator.pic = (ImageSource)Convert(e.Crator.PictureUrl, typeof(ImageSource), null, null);
+                }
 
                 // Store original events for filtering
                 originalEvents = new ObservableCollection<Event>(Events);
@@ -220,6 +223,14 @@ namespace SportApp.ViewModels
             var viewModel = new UserDetailsViewModel(h, e);
             var viewEventPage = new UserDetailsPage(viewModel);
             await Shell.Current.Navigation.PushAsync(viewEventPage);
+        }
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is byte[] byteArray && byteArray.Length > 0)
+            {
+                return ImageSource.FromStream(() => new MemoryStream(byteArray));
+            }
+            return null; // Return a default image or null if no data is available
         }
     }
 }

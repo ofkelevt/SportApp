@@ -8,4 +8,14 @@ public partial class AdminPage : ContentPage
 		BindingContext = vm;
 		InitializeComponent();
 	}
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (BindingContext is AdminViewModel vm)
+        {
+            if (vm.RefreshCommand != null)
+                vm.RefreshCommand.Execute(null);
+        }
+    }
 }

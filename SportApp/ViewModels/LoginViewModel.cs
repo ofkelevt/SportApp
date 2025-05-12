@@ -76,10 +76,6 @@ namespace SportApp.ViewModels
         public ICommand LoginCommand { get; set; }
         private async void OnLogin()
         {
-            var viewModel = new SignUpViewModel(h);
-            var viewEventPage = new SignUpPage(viewModel);
-            Console.WriteLine("sup");
-            await Shell.Current.Navigation.PushAsync(viewEventPage);
             //Choose the way you want to blobk the page while indicating a server call
             InServerCall = true;
             //LoginInfo userInfo = new LoginInfo()
@@ -123,7 +119,6 @@ namespace SportApp.ViewModels
         {
             var viewModel = new SignUpViewModel(h);
             var viewEventPage = new SignUpPage(viewModel);
-            Console.WriteLine("sup");
             await Shell.Current.Navigation.PushAsync(viewEventPage);
 
         }

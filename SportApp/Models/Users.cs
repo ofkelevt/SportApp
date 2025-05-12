@@ -29,6 +29,8 @@ namespace SportApp.Models
         public int Rating { get; set; }
         [JsonIgnore]
         public int ReportCount { get; set; }
+        [JsonIgnore]
+        public ImageSource pic { get; set; }
     }
 
 }

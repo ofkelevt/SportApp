@@ -17,6 +17,9 @@
             <Setter Property="PlaceholderColor" Value="#888888" />
         </Style>
         <ResourceDictionary>
+            <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
+        </ResourceDictionary>
+        <ResourceDictionary>
             <converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
         </ResourceDictionary>
         <Style x:Key="FilterButtonStyle" TargetType="Button">
@@ -49,7 +52,7 @@
                    FontSize="18"
                    HorizontalOptions="Center"
                    TextColor="Gray" />
-        </StackLayout>
+
 
         <!-- Filter Section - Each filter in its own row -->
         <!-- -->
@@ -69,6 +72,7 @@
             Command="{Binding FilterCommand}"
             Style="{StaticResource FilterButtonStyle}" />
         </Grid>
+        </StackLayout>
         <!-- Events List with RefreshView - Improved styling -->
         <RefreshView Grid.Row="2" Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
             <CollectionView ItemsSource="{Binding Events}" Margin="0,5,0,0">
@@ -94,7 +98,7 @@
                                                IsClippedToBounds="True"
                                                Padding="0"
                                                BorderColor="Transparent">
-                                            <Image Source="{Binding Crator.PictureUrl ,Converter={StaticResource ByteArrayToImageSourceConverter}}" 
+                                            <Image Source="{Binding Crator.pic}" 
                                                    Aspect="AspectFill" />
                                         </Frame>
 

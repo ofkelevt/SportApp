@@ -50,7 +50,7 @@
                         <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
                             <Frame CornerRadius="25" Padding="0" IsClippedToBounds="True"
                                    HeightRequest="50" WidthRequest="50">
-                                <Image Source="{Binding SelectedEvent.Crator.PictureUrl}" 
+                                <Image Source="{Binding SelectedEvent.Crator.PictureUrl , Converter={StaticResource ByteArrayToImageSourceConverter}}" 
                                        Aspect="AspectFill"/>
                             </Frame>
                             <Label Text="{Binding SelectedEvent.Crator.Username, FallbackValue='[No Username]'}" 
